@@ -1,0 +1,399 @@
+/* Reset
+------------------------------------------------------------------------- */
+
+/* Based on http://meyerweb.com/eric/tools/css/reset/ */
+/* v1.0 | 20080212 */
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, 
+blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, 
+font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, 
+u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, 
+caption, tbody, tfoot, thead, tr, th, td { 
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+}
+ 
+ol, ul { list-style: none; }
+
+blockquote, q { quotes: none; }
+
+blockquote:before, blockquote:after, 
+q:before, q:after {
+    content: ''; 
+    content: none;
+}
+ 
+:focus { outline: 0; }
+
+ins { text-decoration: none; }
+
+del { text-decoration: line-through; }
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+a { outline: none; }
+
+/* General
+---------------------------------------------------------------------------- */
+
+body {
+    font-family: "Monaco", "Courier New", monospace;
+    font-size: 75%;
+    margin: 0;
+    background-color: #fff;
+    color: #000000;
+}
+
+a:link, a:visited {
+    color: #4183C4;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+i {
+    font-style: normal;
+}
+
+td, th {
+    padding: 5px;
+}
+
+.page_nav br {
+	display: none;
+}
+
+/* Page Header
+---------------------------------------------------------------------------- */
+
+.page_header {
+    background: #cfcfcf url(img/page_header.png) repeat-x 0 0;
+    height: 40px;
+    line-height: 40px;
+    position: relative;
+    padding: 0 27px;
+    margin-bottom: 30px;
+}
+
+.page_header a:link, .page_header a:visited {
+    color: #000;
+    background: #eee;
+    text-decoration: none;
+    padding: 3px;
+}
+
+.page_header a:hover {
+    background: #bbb;
+    padding: 3px;
+}
+
+.page_header a:first-child {
+    background: transparent;
+}
+
+.page_header img.logo {
+    float: right;
+    padding: 7px 1.0em;
+    border: 0;
+}
+
+/* Page Footer
+---------------------------------------------------------------------------- */
+
+.page_footer {
+    height: 115px;
+    line-height: 115px;
+    background: #4386ba url(img/page_footer.png) repeat-x 0 0;
+    padding: 0 30px;
+    margin-top: 15px;
+}
+
+.page_footer a {
+    padding-top: 5em;
+}
+
+.page_footer_text {
+    color: #fff;
+    display: inline;
+    float: left;
+}
+
+a.rss_logo {
+    float: right;
+    padding: 3px;
+    width: 35px;
+    line-height: 10px;
+    border: 1px solid;
+    border-color: #fcc7a5 #7d3302 #3e1a01 #ff954e;
+    color: #ffffff;
+    background-color: #ff6600;
+    font-weight: bold;
+    font-family: sans-serif;
+    font-size: 70%;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 4.5em;
+    margin-left: 5px;
+}
+
+a.rss_logo:hover {
+    background-color: #ee5500;
+}  
+
+/* Elements
+---------------------------------------------------------------------------- */
+
+.project_list,
+.shortlog,
+.tree,
+.commit_search {
+    width: 960px;
+    margin: 0 auto 15px auto;
+    border: 1px solid #d8d8d8;
+}
+
+.project_list th,
+.shortlog th,
+.tree th,
+.commit_search th {
+    color: #afafaf;
+    font-weight: normal;
+}
+
+.project_list tr,
+.shortlog tr,
+.tree tr,
+.commit_search tr {
+    background: #eaeaea;
+    height: 2.5em;
+    text-align: left;
+    color: #545454;
+}
+
+.project_list tr.dark, .project_list tr.light,
+.shortlog tr.dark, .shortlog tr.light,
+.tree tr.dark, .tree tr.light,
+.commit_search tr.dark, .commit_search tr.light {
+    background: #efefef url(img/table_row.png) repeat-x 0 0;
+    height: 2.5em;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+th .header {
+    background: transparent;
+    border: 0;
+    padding: 0;
+}
+
+.tree {
+    width: 100%;
+    margin: 0;
+}
+
+.commit_search {
+    background: #eaeaea;
+}
+
+.page_nav,
+.history,
+.list_head,
+.page_path,
+.search {
+    width: 948px;
+    background: #f0f0f0;
+    color: #545454;
+    border: 1px solid #d8d8d8;
+    padding: 5px;
+    margin: 0 auto 15px auto;
+}
+
+.title {
+    width: 950px;
+    padding: 5px;
+}
+
+.projects_list,
+.heads,
+.tags {
+    width: 960px;
+    background: #f0f0f0;
+    color: #545454;
+    border: 1px solid #d8d8d8;
+    padding: 5px;
+    margin: 0 auto 15px auto;
+}
+
+.header {
+    width: 948px;
+    margin: 0 auto 15px auto;
+    background: #eaf2f5;
+    border: 1px solid #bedce7;
+    padding: 5px;
+}
+
+.header .age {
+    float: left;
+    color: #000;
+    font-weight: bold;
+    width: 10em;
+}
+
+.title_text {
+    width: 948px;
+    background: #eaf2f5;
+    border: 1px solid #bedce7;
+    padding: 5px;
+    margin: 0 auto 0 auto;
+}
+
+.log_body {
+    width: 948px;
+    background: #eaf2f5;
+    border: 1px solid #bedce7;
+    border-top: 0;
+    padding: 5px;
+    margin: 0 auto 15px auto;
+}
+
+.page_body {
+    line-height: 1.4em;
+    width: 948px;
+    background: #f8f8ff;
+    border: 1px solid #d8d8d8;
+    padding: 5px;
+    margin: 15px auto 15px auto;
+}
+
+.diff_tree {
+    width: 960px;
+    background: #f0f0f0;
+    border: 1px solid #d8d8d8;
+    padding: 5px;
+    margin: 0 auto 15px auto;
+}
+
+.author_date {
+    width: 948px;
+    background: #f0f0f0;
+    border: 1px solid #d8d8d8;
+    padding: 5px;
+    margin: 0 auto 15px auto;
+}
+
+/* Refs
+---------------------------------------------------------------------------- */
+
+span.refs span {
+    color: #000;
+    padding: 0px 4px;
+    font-size: 70%;
+    font-weight: normal;
+    border: 1px solid;
+    background-color: #ffaaff;
+    border-color: #ffccff #ff00ee #ff00ee #ffccff;
+}
+
+span.refs span.ref {
+    background-color: #aaaaff;
+    border-color: #ccccff #0033cc #0033cc #ccccff;
+}
+
+span.refs span.tag {
+    background-color: #ffffaa;
+    border-color: #ffffcc #dccd00 #dccd00 #ffffcc;
+}
+
+span.refs span.head {
+    background-color: #aaffaa;
+    border-color: #ccffcc #00cc33 #00cc33 #ccffcc;
+}
+
+/* Diffs
+---------------------------------------------------------------------------- */
+
+.patchset {
+    overflow: auto;
+}
+
+.chunk_header {
+    background: #eaf2f5;
+    color: #999;
+}
+
+.rem {
+    background: #ffdddd;
+}
+.add {
+    background: #ddffdd;
+}
+
+/* Age
+---------------------------------------------------------------------------- */
+
+/* noage: "No commits" */
+.project_list td.noage {
+    color: #cdcdcd;
+}
+
+/* age2: 60*60*24*2 <= age */
+.project_list td.age2, .blame td.age2 {
+    color: #545454;
+}
+
+/* age1: 60*60*2 <= age < 60*60*24*2 */
+.project_list td.age1 {
+    color: #009900;
+}
+
+/* age0: age < 60*60*2 */
+.project_list td.age0 {
+    color: #009900;
+    font-weight: bold;
+}
+
+/* File status
+---------------------------------------------------------------------------- */
+
+.diff_tree span.file_status.new {
+    color: #008000;
+}
+
+table.diff_tree span.file_status.deleted {
+    color: #c00000;
+}
+
+table.diff_tree span.file_status.moved,
+table.diff_tree span.file_status.mode_chnge {
+    color: #545454;
+}
+
+table.diff_tree span.file_status.copied {
+  color: #70a070;
+}
+
+span.cntrl {
+    border: dashed #aaaaaa;
+    border-width: 1px;
+    padding: 0px 2px 0px 2px;
+    margin:  0px 2px 0px 2px;
+}
+
+span.match {
+    background: #aaffaa;
+    color: #000;
+}
+
+td.error {
+    color: red;
+    background: yellow;
+}
