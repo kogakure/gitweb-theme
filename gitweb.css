@@ -78,8 +78,8 @@ td, th {
 
 .page_header {
     background: #cfcfcf url(img/page_header.png) repeat-x 0 0;
-    height: 40px;
-    line-height: 40px;
+    height: 3.4em;
+    line-height: 3.4em;
     position: relative;
     padding: 0 27px;
     margin-bottom: 30px;
@@ -103,7 +103,7 @@ td, th {
 
 .page_header img.logo {
     float: right;
-    padding: 7px 1.0em;
+    padding: 0.7em 1.0em;
     border: 0;
 }
 
