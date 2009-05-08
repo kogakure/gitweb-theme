@@ -46,7 +46,7 @@ a { outline: none; }
 
 body {
     font-family: "Monaco", "Courier New", monospace;
-    font-size: 75%;
+    font-size: 12px;
     margin: 0;
     background-color: #fff;
     color: #000000;
