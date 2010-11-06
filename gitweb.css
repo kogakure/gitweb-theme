@@ -167,7 +167,8 @@ a.rss_logo:hover {
 .project_list,
 .shortlog,
 .tree,
-.commit_search {
+.commit_search,
+.history {
     font-family: "Monaco", "Courier New", monospace;
     width: 95%;
     margin: 0 auto 15px auto;
@@ -198,7 +199,8 @@ a.rss_logo:hover {
 .project_list tr.dark, .project_list tr.light,
 .shortlog tr.dark, .shortlog tr.light,
 .tree tr.dark, .tree tr.light,
-.commit_search tr.dark, .commit_search tr.light {
+.commit_search tr.dark, .commit_search tr.light,
+.history tr.dark, .history tr.light {
     background: #F9F9F9; /* old browsers */
     background: -moz-linear-gradient(top, #F9F9F9 0%, #EFEFEF 100%); /* firefox */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#F9F9F9), color-stop(100%,#EFEFEF)); /* webkit */
@@ -227,16 +229,21 @@ th .header {
 }
 
 .page_nav,
-.history,
 .list_head,
 .page_path,
 .search {
+    font-family: "Monaco", "Courier New", monospace;
     width: 94%;
-    background: #f0f0f0;
+    background: #eaeaea;
     color: #545454;
     border: 1px solid #d8d8d8;
     padding: 5px;
     margin: 0 auto 15px auto;
+}
+
+.history {
+    font-family: "Monaco", "Courier New", monospace;
+    background: #eaeaea;
 }
 
 .title {
