@@ -109,9 +109,6 @@ td, th {
 }
 
 .page_header img.logo {
-    float: right;
-    padding: 1.5em 1.0em;
-    border: 0;
     display: none;
 }
 
@@ -127,10 +124,6 @@ td, th {
     background: #f1f1f1;
     border-top: 2px solid #ddd;
     border-bottom: 1px solid #ddd;
-}
-
-.page_footer a {
-    padding-top: 5em;
 }
 
 .page_footer_text {
