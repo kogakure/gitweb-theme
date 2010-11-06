@@ -45,7 +45,7 @@ a { outline: none; }
 ---------------------------------------------------------------------------- */
 
 body {
-    font-family: Helvetica,Arial,Freesans,Clean,sans-serif;
+    font-family: "Monaco", "Courier New", monospace;
     font-size: 12px;
     margin: 0;
     background-color: #fff;
@@ -83,7 +83,7 @@ td, th {
     padding: 0 27px;
     margin-bottom: 20px;
     font-size: 20px;
-    font-family: Helvetica,Arial,Freesans,Clean,sans-serif;
+    font-family: Helvetica, Arial, Freesans, Clean, sans-serif;
     background: #FFFFFF; /* old browsers */
     background: -moz-linear-gradient(top, #FFFFFF 0%, #F5F5F5 100%); /* firefox */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(100%,#F5F5F5)); /* webkit */
@@ -162,7 +162,6 @@ a.rss_logo:hover {
 .tree,
 .commit_search,
 .history {
-    font-family: "Monaco", "Courier New", monospace;
     width: 95%;
     margin: 0 auto 15px auto;
     border: 1px solid #d8d8d8;
@@ -214,10 +213,6 @@ th .header {
     margin: 0;
 }
 
-.pre {
-    font-family: "Monaco", "Courier New", monospace;
-}
-
 .projsearch {
     position: absolute;
     right: 4%;
@@ -232,7 +227,6 @@ th .header {
 .list_head,
 .page_path,
 .search {
-    font-family: "Monaco", "Courier New", monospace;
     width: 94%;
     background: #eaeaea;
     color: #545454;
@@ -242,7 +236,6 @@ th .header {
 }
 
 .history {
-    font-family: "Monaco", "Courier New", monospace;
     background: #eaeaea;
 }
 
@@ -253,7 +246,6 @@ th .header {
 
 .projects_list,
 .tags {
-    font-family: "Monaco", "Courier New", monospace;
     width: 95%;
     background: #f0f0f0;
     color: #545454;
@@ -263,7 +255,6 @@ th .header {
 }
 
 .heads {
-    font-family: "Monaco", "Courier New", monospace;
     width: 95%;
     color: #545454;
     border: 1px solid #d8d8d8;
@@ -272,7 +263,6 @@ th .header {
 }
 
 .header {
-    font-family: "Monaco", "Courier New", monospace;
     width: 94%;
     margin: 0 auto 15px auto;
     background: #eaf2f5;
@@ -288,7 +278,6 @@ th .header {
 }
 
 .title_text {
-    font-family: "Monaco", "Courier New", monospace;
     width: 94%;
     background: #eaf2f5;
     border: 1px solid #bedce7;
@@ -297,7 +286,6 @@ th .header {
 }
 
 .log_body {
-    font-family: "Monaco", "Courier New", monospace;
     width: 94%;
     background: #eaf2f5;
     border: 1px solid #bedce7;
@@ -307,7 +295,6 @@ th .header {
 }
 
 .page_body {
-    font-family: "Monaco", "Courier New", monospace;
     line-height: 1.4em;
     width: 94%;
     background: #f8f8f8;
@@ -372,7 +359,6 @@ span.refs a {
 ---------------------------------------------------------------------------- */
 
 .patchset {
-    font-family: "Monaco", "Courier New", monospace;
     overflow: auto;
 }
 
