@@ -2,7 +2,7 @@
 Theme for gitweb
 ================
 
-This is an alternative theme for `gitweb`_. It is *strongly* inspired by GitHub.
+This is an alternative theme for `gitweb`_ (1.7.3.2+). It is *strongly* inspired by GitHub.
 
 Installation
 ============

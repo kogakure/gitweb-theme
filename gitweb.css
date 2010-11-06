@@ -81,7 +81,7 @@ td, th {
     line-height: 50px;
     position: relative;
     padding: 0 27px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     font-size: 20px;
     font-family: Helvetica,Arial,Freesans,Clean,sans-serif;
     background: #FFFFFF; /* old browsers */
@@ -193,7 +193,8 @@ a.rss_logo:hover {
 .shortlog tr.dark, .shortlog tr.light,
 .tree tr.dark, .tree tr.light,
 .commit_search tr.dark, .commit_search tr.light,
-.history tr.dark, .history tr.light {
+.history tr.dark, .history tr.light,
+.heads tr.dark, .heads tr.light {
     background: #F9F9F9; /* old browsers */
     background: -moz-linear-gradient(top, #F9F9F9 0%, #EFEFEF 100%); /* firefox */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#F9F9F9), color-stop(100%,#EFEFEF)); /* webkit */
@@ -215,6 +216,12 @@ th .header {
 
 .pre {
     font-family: "Monaco", "Courier New", monospace;
+}
+
+.projsearch {
+    position: absolute;
+    right: 4%;
+    top: 15px;
 }
 
 .commit_search {
@@ -245,10 +252,19 @@ th .header {
 }
 
 .projects_list,
-.heads,
 .tags {
+    font-family: "Monaco", "Courier New", monospace;
     width: 95%;
     background: #f0f0f0;
+    color: #545454;
+    border: 1px solid #d8d8d8;
+    padding: 5px;
+    margin: 0 auto 15px auto;
+}
+
+.heads {
+    font-family: "Monaco", "Courier New", monospace;
+    width: 95%;
     color: #545454;
     border: 1px solid #d8d8d8;
     padding: 5px;
@@ -291,6 +307,7 @@ th .header {
 }
 
 .page_body {
+    font-family: "Monaco", "Courier New", monospace;
     line-height: 1.4em;
     width: 94%;
     background: #f8f8f8;
@@ -301,14 +318,6 @@ th .header {
 
 .diff_tree {
     width: 95%;
-    background: #f0f0f0;
-    border: 1px solid #d8d8d8;
-    padding: 5px;
-    margin: 0 auto 15px auto;
-}
-
-.author_date {
-    width: 94%;
     background: #f0f0f0;
     border: 1px solid #d8d8d8;
     padding: 5px;
@@ -353,6 +362,10 @@ span.refs span.tag {
 span.refs span.head {
     background-color: #aaffaa;
     border-color: #ccffcc #00cc33 #00cc33 #ccffcc;
+}
+
+span.refs a {
+    color: #000;
 }
 
 /* Diffs
