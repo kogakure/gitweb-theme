@@ -141,7 +141,7 @@ td, th {
 
 a.rss_logo {
     float: right;
-    padding: 3px;
+    padding: 3px 1px;
     width: 35px;
     line-height: 10px;
     border: 1px solid;
@@ -150,10 +150,10 @@ a.rss_logo {
     background-color: #ff6600;
     font-weight: bold;
     font-family: sans-serif;
-    font-size: 70%;
+    font-size: 80%;
     text-align: center;
     text-decoration: none;
-    margin-top: 33px;
+    margin-top: 30px;
     margin-left: 5px;
 }
 
