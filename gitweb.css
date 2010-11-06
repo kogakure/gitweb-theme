@@ -218,6 +218,10 @@ th .header {
     margin: 0;
 }
 
+.pre {
+    font-family: "Monaco", "Courier New", monospace;
+}
+
 .commit_search {
     background: #eaeaea;
 }
