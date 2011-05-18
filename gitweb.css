@@ -47,6 +47,7 @@ a { outline: none; }
 body {
   font-family: "Monaco", "Courier New", monospace;
   font-size: 12px;
+  line-height: 1.5;
   margin: 0;
   background-color: #fff;
   color: #000000;
