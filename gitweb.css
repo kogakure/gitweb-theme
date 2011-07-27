@@ -89,6 +89,7 @@ td, th {
   background: -moz-linear-gradient(top, #FFFFFF 0%, #F5F5F5 100%); /* firefox */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(100%,#F5F5F5)); /* webkit */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#F5F5F5',GradientType=0 ); /* ie */
+  background: -o-linear-gradient(top, #FFFFFF 0%, #F5F5F5 100%);
   border-bottom: 1px solid #dfdfdf;
 }
 
@@ -199,6 +200,7 @@ a.rss_logo:hover {
   background: -moz-linear-gradient(top, #F9F9F9 0%, #EFEFEF 100%); /* firefox */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#F9F9F9), color-stop(100%,#EFEFEF)); /* webkit */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F9F9F9', endColorstr='#EFEFEF',GradientType=0 ); /* ie */
+  background: -o-linear-gradient(top, #F9F9F9 0%, #EFEFEF 100%);
   height: 2.5em;
   border-bottom: 1px solid #e1e1e1;
 }
