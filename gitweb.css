@@ -62,6 +62,22 @@ a:hover {
   text-decoration: underline;
 }
 
+td.list a[href*='a=tree'], td.list a[href*='a=blob'] {
+    padding-left: 20px;
+    display: block;
+    float: left;
+    height: 16px;
+    line-height: 16px;
+}
+
+td.list a[href*='a=tree'] {
+    background: url(dir.png) center left no-repeat;
+}
+
+td.list a[href*='a=blob'] {
+    background: url(txt.png) center left no-repeat;
+}
+
 i {
   font-style: normal;
 }
@@ -463,3 +479,4 @@ td.pre, div.pre, div.diff {
 .kwb    { color:#6b3099; }
 .kwc    { color:#d4663d; }
 .kwd    { color:#2928ff; }
+
