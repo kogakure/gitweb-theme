@@ -385,6 +385,7 @@ span.refs a {
 .patchset {
   overflow-x: auto;
   overflow-y: hidden;
+  font-family: 'Consolas','Bitstream Vera Sans Mono',monospace;
 }
 
 .chunk_header {
