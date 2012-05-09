@@ -52,6 +52,11 @@ body {
   color: #000000;
 }
 
+/* Monospaced Fonts */
+.sha1, .mode, .diff_tree .list, .pre, .diff, .patchset {
+  font-family: 'Consolas','Bitstream Vera Sans Mono',monospace;
+}
+
 a:link, a:visited {
   color: #4183C4;
   text-decoration: none;
@@ -385,7 +390,6 @@ span.refs a {
 .patchset {
   overflow-x: auto;
   overflow-y: hidden;
-  font-family: 'Consolas','Bitstream Vera Sans Mono',monospace;
 }
 
 .chunk_header {
