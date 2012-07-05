@@ -9,10 +9,16 @@ Fullsize screenshots available on `kogakure.github.com/gitweb-theme`_.
 Installation
 ============
 
-The installation of this stylesheet is very easy. 
+The installation of this stylesheet is very easy:
 
-Just copy the CSS-file `gitweb.css` into the gitweb folder. Best practise
-would be to rename the old file, in case you want to switch back.
+Just clone the repository to a location of your choice, probably into the same directory where the base gitweb stylesheet is located (in Ubuntu, this is e.g. /usr/share/gitweb/). It's recommended to move away the existing files and then create symlinks to the new files. You can do this with the following few commands::
+
+	cd <PUT YOUR LOCATION OF GITWEB HERE, could be /usr/share/gitweb/>
+	mv gitweb.css gitweb_original.css
+	mv gitweb.js gitweb_original.js
+	git clone git://github.com/kogakure/gitweb-theme.git
+	ln -s gitweb-theme/gitweb.css gitweb.css
+	ln -s gitweb-theme/gitweb.js gitweb.js
 
 If you see some missing things or errors, please post a comment.
 
