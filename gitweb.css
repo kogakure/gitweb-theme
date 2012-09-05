@@ -131,7 +131,9 @@ td, th {
 }
 
 .page_header img.logo {
-  display: none;
+  position: relative;
+  top: 7px;
+  margin-right: 5px;
 }
 
 /* Page Footer
@@ -247,6 +249,10 @@ th .header {
   top: 15px;
 }
 
+.projsearch a {
+  display: none;
+}
+
 .commit_search {
   background: #eaeaea;
 }
@@ -349,7 +355,7 @@ th .header {
 }
 
 .patch > .header {
-  width: 98.5%;
+  width: 99%;
 }
 
 /* Refs
@@ -387,6 +393,20 @@ span.refs a {
 /* Diffs
 ---------------------------------------------------------------------------- */
 
+div.diff.to_file a.path,
+div.diff.to_file {
+  color: #007000;
+}
+
+div.diff.from_file a.path,
+div.diff.from_file {
+  color: #aa0000;
+}
+
+.patch .header {
+  margin: 0;
+}
+
 .patchset {
   overflow-x: auto;
   overflow-y: hidden;
@@ -402,6 +422,42 @@ span.refs a {
 }
 .add {
   background: #ddffdd;
+}
+
+.extended_header {
+  width: 99.5%;
+}
+
+div.chunk_block {
+  overflow: hidden;
+}
+
+div.chunk_block div.old {
+  float: left;
+  width: 50%;
+  overflow: hidden;
+  border-right: 5px solid #EAF2F5;
+}
+
+div.chunk_block.rem,
+div.chunk_block.add {
+  background: transparent;
+}
+
+div.chunk_block div.old .add,
+div.chunk_block div.old .rem {
+  padding-right: 3px;
+}
+
+div.chunk_block div.new .add,
+div.chunk_block div.new .rem {
+  padding-left: 3px;
+}
+
+div.chunk_block div.new {
+  margin-left: 50%;
+  width: 50%;
+  border-left: 5px solid #EAF2F5;
 }
 
 /* Age
@@ -488,4 +544,3 @@ td.pre, div.pre, div.diff {
 .kwb    { color:#6b3099; }
 .kwc    { color:#d4663d; }
 .kwd    { color:#2928ff; }
-

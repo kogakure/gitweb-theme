@@ -2,7 +2,7 @@
 Theme for gitweb
 ================
 
-This is an alternative theme for `gitweb`_ (tested with git web interface version 1.7.4.2). It is *strongly* inspired by GitHub.
+This is an alternative theme for `gitweb`_ (tested with git web interface version 1.7.12). It is *strongly* inspired by GitHub.
 
 Fullsize screenshots available on `kogakure.github.com/gitweb-theme`_.
 
@@ -13,14 +13,18 @@ The installation of this stylesheet is very easy:
 
 Just clone the repository to a location of your choice, probably into the same directory where the base gitweb stylesheet is located (in Ubuntu, this is e.g. /usr/share/gitweb/). It's recommended to move away the existing files and then create symlinks to the new files. You can do this with the following few commands::
 
-	cd <PUT YOUR LOCATION OF GITWEB HERE, could be /usr/share/gitweb/>
-	mv gitweb.css gitweb_original.css
-	mv gitweb.js gitweb_original.js
-	git clone git://github.com/kogakure/gitweb-theme.git
-	ln -s gitweb-theme/gitweb.css gitweb.css
-	ln -s gitweb-theme/gitweb.js gitweb.js
+  cd <PUT YOUR LOCATION OF GITWEB HERE, could be /usr/share/gitweb/>
+  mv gitweb.css gitweb_original.css
+  mv gitweb.js gitweb_original.js
+  mv git-logo.png git-logo_original.png
+  mv git-favicon.png git-favicon_original.png
+  git clone git://github.com/kogakure/gitweb-theme.git
+  ln -s gitweb-theme/gitweb.css gitweb.css
+  ln -s gitweb-theme/gitweb.js gitweb.js
+  ln -s gitweb-theme/git-logo.png git-logo.png
+  ln -s gitweb-theme/git-favicon.png git-favicon.png
 
-If you see some missing things or errors, please post a comment.
+Of course you can just copy them to the new location. If you see some missing things or errors, please create a ticket or fix it and send a pull request.
 
 .. _gitweb: http://git.or.cz/gitwiki/Gitweb
 .. _kogakure.github.com/gitweb-theme: http://kogakure.github.com/gitweb-theme
