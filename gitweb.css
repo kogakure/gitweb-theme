@@ -358,6 +358,22 @@ th .header {
   width: 99%;
 }
 
+.author .avatar,
+.author_date .avatar {
+  position: relative;
+  top: 3px;
+}
+
+.object_header .avatar {
+  border: 1px solid #D8D8D8;
+  float: right;
+}
+
+.object_header td,
+.object_header th {
+  vertical-align: top;
+}
+
 /* Refs
 ---------------------------------------------------------------------------- */
 
@@ -544,3 +560,4 @@ td.pre, div.pre, div.diff {
 .kwb    { color:#6b3099; }
 .kwc    { color:#d4663d; }
 .kwd    { color:#2928ff; }
+
