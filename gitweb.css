@@ -178,6 +178,20 @@ a.rss_logo:hover {
   background-color: #ee5500;
 }
 
+/* Index include
+---------------------------------------------------------------------------- */
+
+.index_include {
+  width: 95%;
+  margin: 0 auto 15px;
+  background: -moz-linear-gradient(center top , #FFFFFF 0%, #F5F5F5 100%) repeat scroll 0 0 transparent;
+  border: 1px solid #DFDFDF;
+  padding: 8px;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
 /* Elements
 ---------------------------------------------------------------------------- */
 
