@@ -26,6 +26,10 @@ Just clone the repository to a location of your choice, probably into the same d
 
 Of course you can just copy them to the new location. If you see some missing things or errors, please create a ticket or fix it and send a pull request.
 
+Optionally, you can enable syntax highlighting for your code. Install the highligh package with your package manager and add this line to /etc/gitweb.conf:
+
+  $feature{'highlight'}{'default'} = [1];
+
 .. _gitweb: http://git.or.cz/gitwiki/Gitweb
 .. _kogakure.github.com/gitweb-theme: http://kogakure.github.com/gitweb-theme
 
