@@ -30,6 +30,10 @@ Optionally, you can enable syntax highlighting for your code. Install the highli
 
   $feature{'highlight'}{'default'} = [1];
 
+You can enable Gravatar support with this line:
+
+  $feature{'avatar'}{'default'} = ['gravatar'];
+
 .. _gitweb: http://git.or.cz/gitwiki/Gitweb
 .. _kogakure.github.com/gitweb-theme: http://kogakure.github.com/gitweb-theme
 
