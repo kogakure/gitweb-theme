@@ -161,6 +161,7 @@ td, th {
   color: #666;
   display: inline;
   float: left;
+  margin-left: 25px;
 }
 
 a.rss_logo {
@@ -185,8 +186,13 @@ a.rss_logo:hover {
   background-color: #ee5500;
 }
 
-a.rss_logo:first-child {
+.rss_logo {
   margin-right: 25px;
+  background: yellow;
+}
+
+.rss_logo:last-child {
+  margin-right: 5px;
 }
 
 /* Index include
@@ -394,7 +400,7 @@ th .header {
   float: right;
 }
 
-.object_header td, 
+.object_header td,
 .object_header th {
   vertical-align: top;
 }
