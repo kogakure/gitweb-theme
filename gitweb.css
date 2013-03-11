@@ -44,10 +44,15 @@ a { outline: none; }
 /* General
 ---------------------------------------------------------------------------- */
 
+html {
+  position: relative;
+  min-height: 100%;
+}
+
 body {
   font: 13px Helvetica,arial,freesans,clean,sans-serif;
   line-height: 1.4;
-  margin: 0;
+  margin: 0 0 105px;
   background-color: #fff;
   color: #000000;
 }
@@ -140,11 +145,13 @@ td, th {
 ---------------------------------------------------------------------------- */
 
 .page_footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
   height: 80px;
   line-height: 80px;
-  padding: 0 30px;
   margin-top: 15px;
-  margin-bottom: 30px;
   background: #f1f1f1;
   border-top: 2px solid #ddd;
   border-bottom: 1px solid #ddd;
@@ -176,6 +183,10 @@ a.rss_logo {
 
 a.rss_logo:hover {
   background-color: #ee5500;
+}
+
+a.rss_logo:first-child {
+  margin-right: 25px;
 }
 
 /* Index include
@@ -383,7 +394,7 @@ th .header {
   float: right;
 }
 
-.object_header td,
+.object_header td, 
 .object_header th {
   vertical-align: top;
 }
