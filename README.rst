@@ -1,4 +1,10 @@
 ================
+Work In Progress
+================
+
+
+
+================
 Theme for gitweb
 ================
 
@@ -10,6 +16,22 @@ Installation
 ============
 
 The installation of this stylesheet is very easy:
+
+
+
+
+# html snippet to include in the <head> section of each page
+our $site_html_head_string = "<script src=\"static/loader.js\"></script>";
+# filename of html text to include at top of each page
+our $site_header = "static/header.html";
+# html text to include at home page
+our $home_text = "indextext.html";
+# filename of html text to include at bottom of each page
+our $site_footer = "static/footer.html";
+
+
+
+
 
 Just clone the repository to a location of your choice, probably into the same directory where the base gitweb stylesheet is located (in Ubuntu, this is e.g. /usr/share/gitweb/). It's recommended to move away the existing files and then create symlinks to the new files. You can do this with the following few commands::
 

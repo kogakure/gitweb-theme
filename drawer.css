@@ -1,0 +1,43 @@
+#slideout {
+	background:#FFFFFF;
+	position:absolute;
+	width:300px;
+	height:80px;
+	top:50px;
+	left:-280px;
+	z-index:9999;
+	border: 1px solid #dfdfdf;
+}
+
+#clickme {
+	float:right;
+	height:80px;
+	width:25px;
+	background: #f1f1f1 url('drawer-tab.png') no-repeat 5px 25px;
+}
+
+#slidecontent {
+	float:left;
+	padding-left: 10px;
+}
+
+.clearfix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+ 
+.clearfix {
+	display: inline-block;
+}
+ 
+html[xmlns] .clearfix {
+	display: block;
+}
+ 
+* html .clearfix {
+	height: 1%;
+}
