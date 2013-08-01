@@ -21,40 +21,22 @@ DEFAULT_TARGET="/usr/share/gitweb"
 install()
 {
 	set_target
+	set_cmd_args
+	
 	cd $TARGET
-
+	
+	log ""
 	log "Backing up Original Files..."
-
-	if [[ $VERBOSE ]]; then
-		MV_ARGS="-v"
-		LN_ARGS="-vs"
-	fi
+		mv $MV_ARGS "$GW_CSS" "$GW_CSS.bak"
+		mv $MV_ARGS "$GW_JS" "$GW_JS.bak"
+		mv $MV_ARGS "$GW_ICON" "$GW_ICON.bak"
+		mv $MV_ARGS "$GW_LOGO" "$GW_LOGO.bak"
 	
-	if [[ $INTERACTIVE ]]; then
-		MV_ARGS="-i"
-		LN_ARGS="-is"
-	fi
-	
-	if [[ $INTERACTIVE && $VERBOSE ]]; then
-		MV_ARGS="-iv"
-		LN_ARGS="-ivs"
-	fi
-	
-	mv $MV_ARGS "$GW_CSS" "$GW_CSS.bak"
-	mv $MV_ARGS "$GW_JS" "$GW_JS.bak"
-	mv $MV_ARGS "$GW_ICON" "$GW_ICON.bak"
-	mv $MV_ARGS "$GW_LOGO" "$GW_LOGO.bak"
-	
-	
+	log ""
 	log "Symlinking New Themed Files..."
-
-	#log "'$TARGET/static/$GW_CSS' -> '$THEME/$GW_CSS'"
 		ln $LN_ARGS "$THEME/$GW_CSS" "$TARGET/$GW_CSS"
-	#log "'$TARGET/static/$GW_JS' -> '$THEME/$GW_JS'"
 		ln $LN_ARGS "$THEME/$GW_JS" "$TARGET/$GW_JS"
-	#log "'$TARGET/static/$GW_ICON' -> '$THEME/$GW_ICON'"
 		ln $LN_ARGS "$THEME/$GW_ICON" "$TARGET/$GW_ICON"
-	#log "'$TARGET/static/$GW_LOGO' -> '$THEME/$GW_LOGO'"
 		ln $LN_ARGS "$THEME/$GW_LOGO" "$TARGET/$GW_LOGO"
 
 	echo "Complete!"
@@ -63,23 +45,24 @@ install()
 remove()
 {
 	set_target
-	cd "$TARGET/static"
+	set_cmd_args
+	
+	cd $TARGET
 
-	echo ""
-	echo "Deleting Symlinks..."
-	  rm -v $GW_CSS
-	  rm -v $GW_JS
-	  rm -v $GW_ICON
-	  rm -v $GW_LOGO
+	log ""
+	log "Deleting Symlinks..."
+		rm $RM_ARGS "./$GW_CSS"
+		rm $RM_ARGS "./$GW_JS"
+		rm $RM_ARGS "./$GW_ICON"
+		rm $RM_ARGS "./$GW_LOGO"
 
-	echo ""
-	echo "Restoring Original Files..."
-	  mv -v "$GW_CSS.bak" $GW_CSS 
-	  mv -v "$GW_JS.bak" $GW_JS
-	  mv -v "$GW_ICON.bak" $GW_ICON
-	  mv -v "$GW_LOGO.bak" $GW_LOGO
+	log ""
+	log "Restoring Original Files..."
+		mv $MV_ARGS "./$GW_CSS.bak" "./$GW_CSS"
+		mv $MV_ARGS "./$GW_JS.bak" "./$GW_JS"
+		mv $MV_ARGS "./$GW_ICON.bak" "./$GW_ICON"
+		mv $MV_ARGS "./$GW_LOGO.bak" "./$GW_LOGO"
 
-	echo ""
 	echo ""
 	echo "Complete!"
 }
@@ -117,6 +100,30 @@ set_target()
 			echo "Couldn't find static folder in the install path."
 			echo "Are you sure this folder contains gitweb?"
 		fi
+	fi
+}
+
+set_cmd_args()
+{
+	if [[ $VERBOSE ]];
+	then
+		MV_ARGS="-v"
+		LN_ARGS="-vs"
+		RM_ARGS="-v"
+	fi
+	
+	if [[ $INTERACTIVE ]];
+	then
+		MV_ARGS="-i"
+		LN_ARGS="-is"
+		RM_ARGS="-i"
+	fi
+	
+	if [[ $INTERACTIVE && $VERBOSE ]];
+	then
+		MV_ARGS="-iv"
+		LN_ARGS="-ivs"
+		RM_ARGS="-iv"
 	fi
 }
 
@@ -213,7 +220,6 @@ do
 		;;
 		-t|--target)
 			TARGET=$2
-			shift
 		;;
 		-V|--version)
 			echo "Gitweb Theme Installer Script - v$PROG_VERSION"
