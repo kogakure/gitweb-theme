@@ -20,32 +20,49 @@ DEFAULT_TARGET="/usr/share/gitweb"
 #
 install()
 {
-	cd "$TARGET/static"
+	set_target
+	cd $TARGET
 
-	echo ""
-	echo "Backing up Original Files..."
-	  mv -v $GW_CSS "$GW_CSS.bak"
-	  mv -v $GW_JS "$GW_JS.bak"
-	  mv -v $GW_ICON "$GW_ICON.bak"
-	  mv -v $GW_LOGO "$GW_LOGO.bak"
+	log "Backing up Original Files..."
 
-	echo ""
-	echo "Symlinking New Themed Files..."
-	  echo "'$TARGET/static/$GW_CSS' -> '$THEME/$GW_CSS'"
-	  ln -s "$THEME/$GW_CSS"
-	  echo "'$TARGET/static/$GW_JS' -> '$THEME/$GW_JS'"
-	  ln -s "$THEME/$GW_JS"
-	  echo "'$TARGET/static/$GW_ICON' -> '$THEME/$GW_ICON'"
-	  ln -s "$THEME/$GW_ICON"
-	  echo "'$TARGET/static/$GW_LOGO' -> '$THEME/$GW_LOGO'"
-	  ln -s "$THEME/$GW_LOGO"
+	if [[ $VERBOSE ]]; then
+		MV_ARGS="-v"
+		LN_ARGS="-vs"
+	fi
+	
+	if [[ $INTERACTIVE ]]; then
+		MV_ARGS="-i"
+		LN_ARGS="-is"
+	fi
+	
+	if [[ $INTERACTIVE && $VERBOSE ]]; then
+		MV_ARGS="-iv"
+		LN_ARGS="-ivs"
+	fi
+	
+	mv $MV_ARGS "$GW_CSS" "$GW_CSS.bak"
+	mv $MV_ARGS "$GW_JS" "$GW_JS.bak"
+	mv $MV_ARGS "$GW_ICON" "$GW_ICON.bak"
+	mv $MV_ARGS "$GW_LOGO" "$GW_LOGO.bak"
+	
+	
+	log "Symlinking New Themed Files..."
 
-	echo ""
+	#log "'$TARGET/static/$GW_CSS' -> '$THEME/$GW_CSS'"
+		ln $LN_ARGS "$THEME/$GW_CSS" "$TARGET/$GW_CSS"
+	#log "'$TARGET/static/$GW_JS' -> '$THEME/$GW_JS'"
+		ln $LN_ARGS "$THEME/$GW_JS" "$TARGET/$GW_JS"
+	#log "'$TARGET/static/$GW_ICON' -> '$THEME/$GW_ICON'"
+		ln $LN_ARGS "$THEME/$GW_ICON" "$TARGET/$GW_ICON"
+	#log "'$TARGET/static/$GW_LOGO' -> '$THEME/$GW_LOGO'"
+		ln $LN_ARGS "$THEME/$GW_LOGO" "$TARGET/$GW_LOGO"
+
 	echo "Complete!"
 }
 
 remove()
 {
+	set_target
 	cd "$TARGET/static"
 
 	echo ""
@@ -63,55 +80,44 @@ remove()
 	  mv -v "$GW_LOGO.bak" $GW_LOGO
 
 	echo ""
+	echo ""
 	echo "Complete!"
-}
-
-set_default_target()
-{
-	if [[ $VERBOSE ]]; then
-		echo "Using default install path: $DEFAULT_TARGET"
-	fi
-
-	if [[ $(check_if_gitweb $DEFAULT_TARGET) ]]
-	then
-		TARGET=$DEFAULT_TARGET
-	else
-		if [[ $VERBOSE ]]; then
-			echo "Couldn't find static folder in the install path."
-			echo "Are you sure this folder contains gitweb?"
-		fi
-		
-		exit 1
-	fi
 }
 
 set_target()
 {
-
-if [[ -z "$1" ]]
-then
-    echo "Using default install path: $DEFAULT_TARGET"
-	
-	read -p "Is this ok? [Y|y] : " -n 1
-	if [[ ! $REPLY =~ ^[Yy]$ ]]
+	if [[ $TARGET && $(check_if_gitweb $TARGET) ]]
 	then
-		echo ""
-		exit 1
+		log "Using specified install path: $TARGET"
+		$TARGET="$TARGET/static"
+		
+		if [[ $INTERACTIVE ]]; then
+			if [[ $(confirm "Is this correct?") ]]
+			then
+				echo ""
+			else
+				exit 1
+			fi
+		fi
 	else
-		TARGET=$DEFAULT_TARGET
-		echo ""s
+		if [[ $(check_if_gitweb $DEFAULT_TARGET) ]]
+		then
+			log "Using default install path: $DEFAULT_TARGET"
+			
+			if [[ $INTERACTIVE ]]; then
+				if [[ $(confirm "Is this correct?") ]]
+				then
+					echo ""
+					TARGET="$DEFAULT_TARGET/static"
+				else
+					exit 1
+				fi
+			fi
+		else
+			echo "Couldn't find static folder in the install path."
+			echo "Are you sure this folder contains gitweb?"
+		fi
 	fi
-else
-    if [[ -d "$2/static" ]]
-    then
-		echo "Install path set: $2"
-        TARGET=$2
-    else
-		echo "Couldn't find static folder in the install path. (Are you sure this folder contains a gitweb install?)"
-		exit 1
-    fi
-fi
-
 }
 
 check_if_gitweb()
@@ -126,12 +132,19 @@ check_if_gitweb()
 
 confirm()
 {
-	read -p "Is this ok? [Y|y] : " -n 1
+	read -p "$1 [Y|y] : " -n 1
 	if [[ ! $REPLY =~ ^[Yy]$ ]]
 	then
 		echo false
 	else
 		echo true
+	fi
+}
+
+log()
+{
+	if [[ $VERBOSE ]]; then
+		echo "$1"
 	fi
 }
 
@@ -145,10 +158,11 @@ The default location is '/usr/share/gitweb' unless set via -t or --target.
 
 OPTIONS:
   -v, --verbose       Verbose output
-  -q, --interactive   Pauses for confirmation at each step
+  -i, --interactive   Pauses for confirmation at each step
   -t, --target        Where to create the symlinks, gitweb installation path
-  -i, --install       Adds '.bak' to original files and creates symlinks to new files
-  -r, --remove        Deletes the symlinks and restores the original files.
+  -V, --version       Displays version information
+  --install           Adds '.bak' to original files and creates symlinks to new files
+  --remove            Deletes the symlinks and restores the original files.
 EOF
 }
 
@@ -157,6 +171,10 @@ EOF
 ##########################################################
 #   Let's Go!
 ##########################################################
+PROG_NAME=$0
+PROG_VERSION="0.9.0"
+AUTHOR="Kevin Hill <http://github.com/kevinkhill>"
+
 TARGET=
 THEME=`pwd`
 INTERACTIVE=false
@@ -167,54 +185,67 @@ GW_JS="gitweb.js"
 GW_ICON="git-favicon.png"
 GW_LOGO="git-logo.png"
 
-#while getopts "hdvit:" OPTION
-#do
-OPTS=`getopt -o vihdt: -l "help,verbose,interactive,target:"  -n "$0" -- "$@"`
+SHORT_OPTS="hviVt:"
+LONG_OPTS="help,verbose,interactive,version,target:,install,remove"
+OPTS=$(getopt -o "$SHORT_OPTS" -l "$LONG_OPTS" --name "$0" -- "$@")
 
-if [ $? != 0 ]
-then
+if [ $? != 0 ]; then
+	echo "$0: error - no options specified" >&2
+	usage
     exit 1
 fi
 
 eval set -- "$OPTS"
+unset OPTS
 
-while true ; do
+while [ $# -gt 0 ]
+do
 	case $1 in
-		-h|--help|?)
-			shift
+		-h|--help|-\?)
 			usage
-			exit 1
+			exit 0
 		;;
 		-v|--verbose)
-			shift
 			VERBOSE=true
 		;;
-		-q|--interactive)
-			shift
+		-i|--interactive)
 			INTERACTIVE=true
 		;;
 		-t|--target)
+			TARGET=$2
 			shift
-			TARGET=$1
-			break
 		;;
-		-i|--install)
+		-V|--version)
+			echo "Gitweb Theme Installer Script - v$PROG_VERSION"
+			echo " Author: $AUTHOR"
+			echo ""
+			echo "Use ./setup --help for instructions"
+		;; 
+		--install)
 			install
-			exit 0
+			shift
 		;;
-		-r|--remove)
+		--remove)
 			remove
-			exit 0
+			shift
 		;;
 		--)
 			shift
 			break
 		;;
+		-*)
+			echo "$0: error - unrecognized option $1" >&2
+			shift
+		;;
+		*)
+			break
+		;;
 	esac
+	shift
 done
 
-echo $TARGET
-echo $VERBOSE
-echo $INTERACTIVE
+echo "TARGET=$TARGET"
+echo "INTERACTIVE=$INTERACTIVE"
+echo "VERBOSE=$VERBOSE"
 
 exit 0
