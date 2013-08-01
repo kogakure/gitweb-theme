@@ -1,0 +1,220 @@
+#!/bin/bash
+
+
+##########################################################
+#   Configuration
+##########################################################
+#
+# Here you can set the default installation directory
+# 
+DEFAULT_TARGET="/usr/share/gitweb"
+
+
+
+
+##########################################################
+#   Functions
+##########################################################
+#
+# (no need to modify, unless you want to)
+#
+install()
+{
+	cd "$TARGET/static"
+
+	echo ""
+	echo "Backing up Original Files..."
+	  mv -v $GW_CSS "$GW_CSS.bak"
+	  mv -v $GW_JS "$GW_JS.bak"
+	  mv -v $GW_ICON "$GW_ICON.bak"
+	  mv -v $GW_LOGO "$GW_LOGO.bak"
+
+	echo ""
+	echo "Symlinking New Themed Files..."
+	  echo "'$TARGET/static/$GW_CSS' -> '$THEME/$GW_CSS'"
+	  ln -s "$THEME/$GW_CSS"
+	  echo "'$TARGET/static/$GW_JS' -> '$THEME/$GW_JS'"
+	  ln -s "$THEME/$GW_JS"
+	  echo "'$TARGET/static/$GW_ICON' -> '$THEME/$GW_ICON'"
+	  ln -s "$THEME/$GW_ICON"
+	  echo "'$TARGET/static/$GW_LOGO' -> '$THEME/$GW_LOGO'"
+	  ln -s "$THEME/$GW_LOGO"
+
+	echo ""
+	echo "Complete!"
+}
+
+remove()
+{
+	cd "$TARGET/static"
+
+	echo ""
+	echo "Deleting Symlinks..."
+	  rm -v $GW_CSS
+	  rm -v $GW_JS
+	  rm -v $GW_ICON
+	  rm -v $GW_LOGO
+
+	echo ""
+	echo "Restoring Original Files..."
+	  mv -v "$GW_CSS.bak" $GW_CSS 
+	  mv -v "$GW_JS.bak" $GW_JS
+	  mv -v "$GW_ICON.bak" $GW_ICON
+	  mv -v "$GW_LOGO.bak" $GW_LOGO
+
+	echo ""
+	echo "Complete!"
+}
+
+set_default_target()
+{
+	if [[ $VERBOSE ]]; then
+		echo "Using default install path: $DEFAULT_TARGET"
+	fi
+
+	if [[ $(check_if_gitweb $DEFAULT_TARGET) ]]
+	then
+		TARGET=$DEFAULT_TARGET
+	else
+		if [[ $VERBOSE ]]; then
+			echo "Couldn't find static folder in the install path."
+			echo "Are you sure this folder contains gitweb?"
+		fi
+		
+		exit 1
+	fi
+}
+
+set_target()
+{
+
+if [[ -z "$1" ]]
+then
+    echo "Using default install path: $DEFAULT_TARGET"
+	
+	read -p "Is this ok? [Y|y] : " -n 1
+	if [[ ! $REPLY =~ ^[Yy]$ ]]
+	then
+		echo ""
+		exit 1
+	else
+		TARGET=$DEFAULT_TARGET
+		echo ""s
+	fi
+else
+    if [[ -d "$2/static" ]]
+    then
+		echo "Install path set: $2"
+        TARGET=$2
+    else
+		echo "Couldn't find static folder in the install path. (Are you sure this folder contains a gitweb install?)"
+		exit 1
+    fi
+fi
+
+}
+
+check_if_gitweb()
+{
+	if [[ -d "$1/static" ]]
+	then
+		echo true
+	else
+		echo false
+	fi
+}
+
+confirm()
+{
+	read -p "Is this ok? [Y|y] : " -n 1
+	if [[ ! $REPLY =~ ^[Yy]$ ]]
+	then
+		echo false
+	else
+		echo true
+	fi
+}
+
+usage()
+{
+cat << EOF
+Usage: $0 [OPTIONS]
+
+This script will create symlinks to your gitweb install for themeing.
+The default location is '/usr/share/gitweb' unless set via -t or --target. 
+
+OPTIONS:
+  -v, --verbose       Verbose output
+  -q, --interactive   Pauses for confirmation at each step
+  -t, --target        Where to create the symlinks, gitweb installation path
+  -i, --install       Adds '.bak' to original files and creates symlinks to new files
+  -r, --remove        Deletes the symlinks and restores the original files.
+EOF
+}
+
+
+
+##########################################################
+#   Let's Go!
+##########################################################
+TARGET=
+THEME=`pwd`
+INTERACTIVE=false
+VERBOSE=false
+
+GW_CSS="gitweb.css"
+GW_JS="gitweb.js"
+GW_ICON="git-favicon.png"
+GW_LOGO="git-logo.png"
+
+#while getopts "hdvit:" OPTION
+#do
+OPTS=`getopt -o vihdt: -l "help,verbose,interactive,target:"  -n "$0" -- "$@"`
+
+if [ $? != 0 ]
+then
+    exit 1
+fi
+
+eval set -- "$OPTS"
+
+while true ; do
+	case $1 in
+		-h|--help|?)
+			shift
+			usage
+			exit 1
+		;;
+		-v|--verbose)
+			shift
+			VERBOSE=true
+		;;
+		-q|--interactive)
+			shift
+			INTERACTIVE=true
+		;;
+		-t|--target)
+			shift
+			TARGET=$1
+			break
+		;;
+		-i|--install)
+			install
+			exit 0
+		;;
+		-r|--remove)
+			remove
+			exit 0
+		;;
+		--)
+			shift
+			break
+		;;
+	esac
+done
+
+echo $TARGET
+echo $VERBOSE
+echo $INTERACTIVE
+
+exit 0
