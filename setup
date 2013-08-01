@@ -24,14 +24,14 @@ install()
 	set_cmd_args
 	
 	log ""
-	log "Backing up Original Files..."
+	confirm "Backing up Original Files, Continue?"
 		mv $MV_ARGS "$TARGET/$GW_CSS" "$TARGET/$GW_CSS.bak"
 		mv $MV_ARGS "$TARGET/$GW_JS" "$TARGET/$GW_JS.bak"
 		mv $MV_ARGS "$TARGET/$GW_ICON" "$TARGET/$GW_ICON.bak"
 		mv $MV_ARGS "$TARGET/$GW_LOGO" "$TARGET/$GW_LOGO.bak"
 	
 	log ""
-	log "Symlinking New Themed Files..."
+	confirm "Symlinking New Themed Files, Continue?"
 		ln $LN_ARGS "$THEME/$GW_CSS" "$TARGET/$GW_CSS"
 		ln $LN_ARGS "$THEME/$GW_JS" "$TARGET/$GW_JS"
 		ln $LN_ARGS "$THEME/$GW_ICON" "$TARGET/$GW_ICON"
@@ -47,14 +47,14 @@ remove()
 	set_cmd_args
 
 	log ""
-	log "Deleting Symlinks..."
+	confirm "Deleting Symlinks, Continue?"
 		rm $RM_ARGS "$TARGET/$GW_CSS"
 		rm $RM_ARGS "$TARGET/$GW_JS"
 		rm $RM_ARGS "$TARGET/$GW_ICON"
 		rm $RM_ARGS "$TARGET/$GW_LOGO"
 
 	log ""
-	log "Restoring Original Files..."
+	confirm "Restoring Original Files, Continue?"
 		mv $MV_ARGS "$TARGET/$GW_CSS.bak" "$TARGET/$GW_CSS"
 		mv $MV_ARGS "$TARGET/$GW_JS.bak" "$TARGET/$GW_JS"
 		mv $MV_ARGS "$TARGET/$GW_ICON.bak" "$TARGET/$GW_ICON"
@@ -136,13 +136,21 @@ check_if_gitweb()
 
 confirm()
 {
-	read -p "$1 [Y|y] : " -n 1
-	if [[ ! $REPLY =~ ^[Yy]$ ]]
-	then
-		echo false
-	else
-		echo true
-	fi
+	read -p "$1 [y|Y] : " -n 1
+	echo ""
+	
+	while [[ ! $REPLY =~ ^[y|Y|n|N]$ ]]; do
+		case $REPLY in
+			n|N)
+				exit 1
+			;;
+			*)
+				echo "You must answer [y|Y] or [n|N]"
+				read -p "$1 [y|Y] : " -n 1
+				echo ""
+			;;
+		esac
+	done
 }
 
 log()
@@ -202,8 +210,7 @@ fi
 eval set -- "$OPTS"
 unset OPTS
 
-while [ $# -gt 0 ]
-do
+while [ $# -gt 0 ]; do
 	case $1 in
 		-h|--help|-\?)
 			usage
