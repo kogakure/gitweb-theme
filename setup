@@ -23,22 +23,35 @@ install()
 	set_target
 	set_cmd_args
 	
-	log ""
-	confirm "Backing up Original Files, Continue?"
-		mv $MV_ARGS "$TARGET/$GW_CSS" "$TARGET/$GW_CSS.bak"
-		mv $MV_ARGS "$TARGET/$GW_JS" "$TARGET/$GW_JS.bak"
-		mv $MV_ARGS "$TARGET/$GW_ICON" "$TARGET/$GW_ICON.bak"
-		mv $MV_ARGS "$TARGET/$GW_LOGO" "$TARGET/$GW_LOGO.bak"
-	
-	log ""
-	confirm "Symlinking New Themed Files, Continue?"
-		ln $LN_ARGS "$THEME/$GW_CSS" "$TARGET/$GW_CSS"
-		ln $LN_ARGS "$THEME/$GW_JS" "$TARGET/$GW_JS"
-		ln $LN_ARGS "$THEME/$GW_ICON" "$TARGET/$GW_ICON"
-		ln $LN_ARGS "$THEME/$GW_LOGO" "$TARGET/$GW_LOGO"
-	
-	echo ""
-	echo "Complete!"
+	if [[ $(check_if_themed) == $TRUE ]];
+	then
+		echo "Symlinks found in target (Is the theme already installed?)"
+	else
+		log ""
+		if [[ $INTERACTIVE && $(confirm "Backing up Original Files, Continue?") == $FALSE ]]; then
+			echo ""
+			exit 1
+		else
+			mv $MV_ARGS "$TARGET/$GW_CSS" "$TARGET/$GW_CSS.bak"
+			mv $MV_ARGS "$TARGET/$GW_JS" "$TARGET/$GW_JS.bak"
+			mv $MV_ARGS "$TARGET/$GW_ICON" "$TARGET/$GW_ICON.bak"
+			mv $MV_ARGS "$TARGET/$GW_LOGO" "$TARGET/$GW_LOGO.bak"
+		fi
+		
+		log ""
+		if [[ $INTERACTIVE && $(confirm "Symlinking New Themed Files, Continue?") == $FALSE ]]; then
+			echo ""
+			exit 1
+		else
+			ln $LN_ARGS "$THEME/$GW_CSS" "$TARGET/$GW_CSS"
+			ln $LN_ARGS "$THEME/$GW_JS" "$TARGET/$GW_JS"
+			ln $LN_ARGS "$THEME/$GW_ICON" "$TARGET/$GW_ICON"
+			ln $LN_ARGS "$THEME/$GW_LOGO" "$TARGET/$GW_LOGO"
+		fi
+		
+		echo ""
+		echo "Complete!"
+	fi
 }
 
 remove()
@@ -46,51 +59,65 @@ remove()
 	set_target
 	set_cmd_args
 
-	log ""
-	confirm "Deleting Symlinks, Continue?"
-		rm $RM_ARGS "$TARGET/$GW_CSS"
-		rm $RM_ARGS "$TARGET/$GW_JS"
-		rm $RM_ARGS "$TARGET/$GW_ICON"
-		rm $RM_ARGS "$TARGET/$GW_LOGO"
+	if [[ $(check_if_themed) == $FALSE ]];
+	then
+		echo "Nothing to do, no symlinks found in target (Is the theme already removed?)"
+	else
+		log ""
+		if [[ $INTERACTIVE && $(confirm "Deleting Symlinks, Continue?") == $FALSE ]]; then
+			echo ""
+			exit 1
+		else
+			echo ""
+			rm $RM_ARGS "$TARGET/$GW_CSS"
+			rm $RM_ARGS "$TARGET/$GW_JS"
+			rm $RM_ARGS "$TARGET/$GW_ICON"
+			rm $RM_ARGS "$TARGET/$GW_LOGO"
+		fi
 
-	log ""
-	confirm "Restoring Original Files, Continue?"
-		mv $MV_ARGS "$TARGET/$GW_CSS.bak" "$TARGET/$GW_CSS"
-		mv $MV_ARGS "$TARGET/$GW_JS.bak" "$TARGET/$GW_JS"
-		mv $MV_ARGS "$TARGET/$GW_ICON.bak" "$TARGET/$GW_ICON"
-		mv $MV_ARGS "$TARGET/$GW_LOGO.bak" "$TARGET/$GW_LOGO"
+		log ""
+		if [[ $(confirm "Restoring Original Files, Continue?") == $FALSE ]]; then
+			echo ""
+			exit 1
+		else
+			echo ""
+			mv $MV_ARGS "$TARGET/$GW_CSS.bak" "$TARGET/$GW_CSS"
+			mv $MV_ARGS "$TARGET/$GW_JS.bak" "$TARGET/$GW_JS"
+			mv $MV_ARGS "$TARGET/$GW_ICON.bak" "$TARGET/$GW_ICON"
+			mv $MV_ARGS "$TARGET/$GW_LOGO.bak" "$TARGET/$GW_LOGO"
+		fi
 
-	echo ""
-	echo "Complete!"
+		echo ""
+		echo "Complete!"
+	fi
 }
 
 set_target()
 {
-	if [[ $TARGET && $(check_if_gitweb $TARGET) ]]
+	if [[ $TARGET && ( $(check_if_gitweb $TARGET) == $TRUE ) ]]
 	then
-		log "Using specified install path: $TARGET"
+		log "Using specified install path: '$TARGET'"
 		$TARGET="$TARGET/static"
 		
 		if [[ $INTERACTIVE ]]; then
-			if [[ $(confirm "Is this correct?") ]]
-			then
+			if [[ $(confirm "Is this correct?") == $FALSE ]]; then
 				echo ""
-			else
 				exit 1
 			fi
 		fi
 	else
-		if [[ $(check_if_gitweb $DEFAULT_TARGET) ]]
+		if [[ $(check_if_gitweb $DEFAULT_TARGET) == $TRUE ]]
 		then
-			log "Using default install path: $DEFAULT_TARGET"
+			log "Using default install path: '$DEFAULT_TARGET'"
 			
 			if [[ $INTERACTIVE ]]; then
-				if [[ $(confirm "Is this correct?") ]]
+				if [[ $(confirm "Is this correct?") == $FALSE ]]
 				then
 					echo ""
-					TARGET="$DEFAULT_TARGET/static"
-				else
 					exit 1
+				else
+					echo ""
+					TARGET="$DEFAULT_TARGET/static"
 				fi
 			fi
 		else
@@ -105,22 +132,22 @@ set_cmd_args()
 	if [[ $VERBOSE ]];
 	then
 		MV_ARGS="-v"
-		LN_ARGS="-vs"
+		LN_ARGS="-v -s"
 		RM_ARGS="-v"
 	fi
 	
 	if [[ $INTERACTIVE ]];
 	then
 		MV_ARGS="-i"
-		LN_ARGS="-is"
+		LN_ARGS="-i -s"
 		RM_ARGS="-i"
 	fi
 	
 	if [[ $INTERACTIVE && $VERBOSE ]];
 	then
-		MV_ARGS="-iv"
-		LN_ARGS="-ivs"
-		RM_ARGS="-iv"
+		MV_ARGS="-i -v"
+		LN_ARGS="-i -v -s"
+		RM_ARGS="-i -v"
 	fi
 }
 
@@ -128,29 +155,42 @@ check_if_gitweb()
 {
 	if [[ -d "$1/static" ]]
 	then
-		echo true
+		echo $TRUE
 	else
-		echo false
+		echo $FALSE
+	fi
+}
+
+check_if_themed()
+{
+
+	if [[ -h "$TARGET/$GW_CSS" && \
+		  -h "$TARGET/$GW_JS" && \
+		  -h "$TARGET/$GW_ICON" && \
+		  -h "$TARGET/$GW_LOGO" ]]
+	then
+		echo $TRUE
+	else
+		echo $FALSE
 	fi
 }
 
 confirm()
 {
-	read -p "$1 [y|Y] : " -n 1
-	echo ""
+	read -n 1 -p "$1 ([y]es / [n]o) : " REPLY
 	
-	while [[ ! $REPLY =~ ^[y|Y|n|N]$ ]]; do
-		case $REPLY in
-			n|N)
-				exit 1
-			;;
-			*)
-				echo "You must answer [y|Y] or [n|N]"
-				read -p "$1 [y|Y] : " -n 1
-				echo ""
-			;;
-		esac
-	done
+	case $REPLY in
+		y|Y)
+			echo $TRUE
+		;;
+		n|N)
+			echo $FALSE
+		;;
+		*)
+			echo "You must answer [y]es or [n]o"
+			confirm "$1"
+		;;
+	esac
 }
 
 log()
@@ -201,14 +241,20 @@ SHORT_OPTS="hviVt:"
 LONG_OPTS="help,verbose,interactive,version,target:,install,remove"
 OPTS=$(getopt -o "$SHORT_OPTS" -l "$LONG_OPTS" --name "$0" -- "$@")
 
+readonly TRUE=0
+readonly FALSE=1
+
 if [ $? != 0 ]; then
-	echo "$0: error - no options specified" >&2
-	usage
     exit 1
 fi
 
 eval set -- "$OPTS"
 unset OPTS
+
+if [ $# -eq 0 ]; then
+	echo "$0: error - no options specified" >&2
+	usage
+fi
 
 while [ $# -gt 0 ]; do
 	case $1 in
