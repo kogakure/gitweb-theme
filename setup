@@ -25,12 +25,12 @@ install()
 	
 	if [[ ( $(check_for_symlinks) == $TRUE ) && ( $(check_for_backups) == $TRUE ) ]];
 	then
-		log "$0: error - Symlinks and backups found in target (Is the theme already installed?)$DEFAULT" >&2
+		log "[ERROR] - Symlinks and backups found in target (Is the theme already installed?)" >&2
 		exit 1
 	else
 
 #Backing up
-		if [[ $INTERACTIVE ]]
+		if [[ $INTERACTIVE == $TRUE ]]
 		then
 			if [[ $(confirm "Backing up original files, continue?") == $FALSE ]]
 			then
@@ -43,18 +43,19 @@ install()
 
 		if [[ $(check_for_backups "complete") == $TRUE ]];
 		then
-			log "$0: notice - Original Backups already present, skipping..."
+			log "Original Backups already present, skipping..."
 		else
+			log "Backing up..."
 			for FILE in "${THEME_FILES[@]}"
 			do
-				echo "-n" "$0: backing up - "
 				mv $MV_ARGS "$TARGET/$FILE" "$TARGET/$FILE.bak"
 			done
+			log "...Complete!"
 		fi
 
 
 #Symlinking
-		if [[ $INTERACTIVE ]]
+		if [[ $INTERACTIVE == $TRUE ]]
 		then
 			if [[ $(confirm "Symlinking theme files, continue?") == $FALSE ]]
 			then
@@ -67,16 +68,15 @@ install()
 
 		if [[ $(check_for_symlinks "complete") == $TRUE ]];
 		then
-			log "$0: notice - Symlinks already present, skipping..."
+			log "Symlinks already present, skipping..."
 		else
+			log "Symlinking..."
 			for FILE in "${THEME_FILES[@]}"
 			do
-				echo "-n" "$0: linking - "
 				ln $LN_ARGS "$THEME/$FILE" "$TARGET/$FILE"
 			done
+			log "...Complete!"
 		fi
-
-		log " Complete!"
 	fi
 }
 
@@ -117,19 +117,21 @@ remove()
 		fi
 
 		echo ""
-		log "notice - Complete!"
+		log "...Complete!"
 	else
-		log "error - Nothing to do, no symlinks or backups found in target (Is the theme already removed?)" >&2
+		log "[ERROR] - Nothing to do, no symlinks or backups found in target (Is the theme already removed?)" >&2
 	fi
 }
 
 set_target()
 {
+	debug
+	
 	if [[ $TARGET && ( $(check_if_gitweb $TARGET) == $TRUE ) ]]
 	then
-		log "notice - Using specified install path: '$TARGET'"
+		log "Using specified install path: '$TARGET'"
 		
-		if [[ $INTERACTIVE ]]; then
+		if [[ $INTERACTIVE == $TRUE ]]; then
 			if [[ $(confirm "Is this correct?") == $FALSE ]]; then
 				echo ""
 				exit 1
@@ -142,9 +144,9 @@ set_target()
 	else
 		if [[ $(check_if_gitweb $DEFAULT_TARGET) == $TRUE ]]
 		then
-			log "notice - Target not set, using default install path: '$DEFAULT_TARGET'"
+			log "Target not set, using default install path: '$DEFAULT_TARGET'"
 			
-			if [[ $INTERACTIVE ]]; then
+			if [[ $INTERACTIVE  == $TRUE ]] ; then
 				if [[ $(confirm "Is this ok?") == $FALSE ]]
 				then
 					echo ""
@@ -156,8 +158,8 @@ set_target()
 
 			$TARGET="$DEFAULT_TARGET/static"
 		else
-			log "error - Couldn't find folder 'static/' in the install path: '$TARGET'" >&2
-			log "error - Are you sure this folder contains gitweb?" >&2
+			log "[ERROR] - Couldn't find folder 'static/' in the install path: '$TARGET'" >&2
+			log "[ERROR] - Are you sure this folder contains gitweb?" >&2
 			exit 1
 		fi
 	fi
@@ -255,7 +257,7 @@ check_for_backups()
 
 confirm()
 {
-	read -n 1 -p "$0: query - $1 [y] | [n] : " REPLY
+	read -n 1 -p "$0: $1 [y] | [n] : " REPLY
 	
 	case $REPLY in
 		y|Y)
@@ -265,7 +267,7 @@ confirm()
 			echo $FALSE
 		;;
 		*)
-			echo " $0: error - You must answer [y] | [n]"
+			echo " $0: [ERROR] - You must answer [y] | [n]"
 			confirm "$1"
 		;;
 	esac
@@ -273,14 +275,17 @@ confirm()
 
 log()
 {
-	if [[ $VERBOSE ]]; then
-		if [[ $1 == "-n" ]]
-		then
-			echo -n "$0: $2"
-		else
-			echo "$0: $1"
-		fi
+	if [[ $VERBOSE == $TRUE ]]
+	then
+		echo "$0: $1"
 	fi
+}
+
+debug()
+{
+echo "TARGET=$TARGET"
+echo "INTERACTIVE=$INTERACTIVE"
+echo "VERBOSE=$VERBOSE"
 }
 
 usage()
@@ -318,8 +323,8 @@ readonly FALSE=1
 
 TARGET=
 THEME=`pwd`
-INTERACTIVE=false
-VERBOSE=false
+INTERACTIVE=$FALSE
+VERBOSE=$FALSE
 
 #GW_CSS="gitweb.css"
 #GW_JS="gitweb.js"
@@ -328,8 +333,8 @@ VERBOSE=false
 
 THEME_FILES=( "gitweb.css" "gitweb.js" "git-favicon.png" "git-logo.png" )
 
-SHORT_OPTS="hviVt:"
-LONG_OPTS="help,verbose,interactive,version,target:,install,remove"
+SHORT_OPTS="Vhvit:"
+LONG_OPTS="version,help,verbose,interactive,target:,install,remove,repair"
 OPTS=$(getopt -o "$SHORT_OPTS" -l "$LONG_OPTS" --name "$0" -- "$@")
 
 if [ $? != 0 ]; then
@@ -340,7 +345,7 @@ eval set -- "$OPTS"
 unset OPTS
 
 if [ $# -eq 0 ]; then
-	echo "$0: error - no options specified" >&2
+	echo "$0: [ERROR] - no options specified" >&2
 	usage
 fi
 
@@ -351,11 +356,11 @@ while [ $# -gt 0 ]; do
 			exit 0
 		;;
 		-v|--verbose)
-			VERBOSE=true
+			VERBOSE=$TRUE
 			shift
 		;;
 		-i|--interactive)
-			INTERACTIVE=true
+			INTERACTIVE=$TRUE
 			shift
 		;;
 		-t|--target)
@@ -382,7 +387,7 @@ while [ $# -gt 0 ]; do
 			break
 		;;
 		-*)
-			echo "$0: error - unrecognized option $1" >&2
+			echo "$0: [ERROR] - unrecognized option $1" >&2
 			shift
 		;;
 		*)
@@ -391,9 +396,5 @@ while [ $# -gt 0 ]; do
 	esac
 	shift
 done
-
-echo "TARGET=$TARGET"
-echo "INTERACTIVE=$INTERACTIVE"
-echo "VERBOSE=$VERBOSE"
 
 exit 0
