@@ -23,34 +23,60 @@ install()
 	set_target
 	set_cmd_args
 	
-	if [[ $(check_if_themed) == $TRUE ]];
+	if [[ ( $(check_for_symlinks) == $TRUE ) && ( $(check_for_backups) == $TRUE ) ]];
 	then
-		echo "Symlinks found in target (Is the theme already installed?)"
+		log "$0: error - Symlinks and backups found in target (Is the theme already installed?)" >&2
+		exit 1
 	else
-		log ""
-		if [[ $INTERACTIVE && $(confirm "Backing up Original Files, Continue?") == $FALSE ]]; then
-			echo ""
-			exit 1
-		else
-			mv $MV_ARGS "$TARGET/$GW_CSS" "$TARGET/$GW_CSS.bak"
-			mv $MV_ARGS "$TARGET/$GW_JS" "$TARGET/$GW_JS.bak"
-			mv $MV_ARGS "$TARGET/$GW_ICON" "$TARGET/$GW_ICON.bak"
-			mv $MV_ARGS "$TARGET/$GW_LOGO" "$TARGET/$GW_LOGO.bak"
+
+#Backing up
+		if [[ $INTERACTIVE ]]
+		then
+			if [[ $(confirm "Backing up original files, continue?") == $FALSE ]]
+			then
+				echo ""
+				exit 1
+			else
+				echo ""
+			fi
 		fi
-		
-		log ""
-		if [[ $INTERACTIVE && $(confirm "Symlinking New Themed Files, Continue?") == $FALSE ]]; then
-			echo ""
-			exit 1
+
+		if [[ $(check_for_backups "complete") == $TRUE ]];
+		then
+			log "$0: notice - Original Backups already present, skipping..."
 		else
-			ln $LN_ARGS "$THEME/$GW_CSS" "$TARGET/$GW_CSS"
-			ln $LN_ARGS "$THEME/$GW_JS" "$TARGET/$GW_JS"
-			ln $LN_ARGS "$THEME/$GW_ICON" "$TARGET/$GW_ICON"
-			ln $LN_ARGS "$THEME/$GW_LOGO" "$TARGET/$GW_LOGO"
+			for FILE in "${THEME_FILES[@]}"
+			do
+				echo "-n" "$0: backing up - "
+				mv $MV_ARGS "$TARGET/$FILE" "$TARGET/$FILE.bak"
+			done
 		fi
-		
-		echo ""
-		echo "Complete!"
+
+
+#Symlinking
+		if [[ $INTERACTIVE ]]
+		then
+			if [[ $(confirm "Symlinking theme files, continue?") == $FALSE ]]
+			then
+				echo ""
+				exit 1
+			else
+				echo ""
+			fi
+		fi
+
+		if [[ $(check_for_symlinks "complete") == $TRUE ]];
+		then
+			log "$0: notice - Symlinks already present, skipping..."
+		else
+			for FILE in "${THEME_FILES[@]}"
+			do
+				echo "-n" "$0: linking - "
+				ln $LN_ARGS "$THEME/$FILE" "$TARGET/$FILE"
+			done
+		fi
+
+		log "Complete!"
 	fi
 }
 
@@ -59,20 +85,23 @@ remove()
 	set_target
 	set_cmd_args
 
-	if [[ $(check_if_themed) == $FALSE ]];
+	if [[ ( $(check_for_symlinks) == $TRUE ) && ( $(check_for_backups) == $TRUE ) ]];
 	then
-		echo "Nothing to do, no symlinks found in target (Is the theme already removed?)"
-	else
 		log ""
 		if [[ $INTERACTIVE && $(confirm "Deleting Symlinks, Continue?") == $FALSE ]]; then
 			echo ""
 			exit 1
 		else
 			echo ""
-			rm $RM_ARGS "$TARGET/$GW_CSS"
-			rm $RM_ARGS "$TARGET/$GW_JS"
-			rm $RM_ARGS "$TARGET/$GW_ICON"
-			rm $RM_ARGS "$TARGET/$GW_LOGO"
+			if [[ $(check_for_symlinks) == $TRUE ]]
+			then
+				rm $RM_ARGS "$TARGET/$GW_CSS"
+				rm $RM_ARGS "$TARGET/$GW_JS"
+				rm $RM_ARGS "$TARGET/$GW_ICON"
+				rm $RM_ARGS "$TARGET/$GW_LOGO"
+			else
+				echo "Symlinks not found, skipping."
+			fi
 		fi
 
 		log ""
@@ -89,6 +118,8 @@ remove()
 
 		echo ""
 		echo "Complete!"
+	else
+		echo "Nothing to do, no symlinks or backups found in target (Is the theme already removed?)"
 	fi
 }
 
@@ -129,6 +160,10 @@ set_target()
 
 set_cmd_args()
 {
+	MV_ARGS=""
+	LN_ARGS=""
+	RM_ARGS=""
+
 	if [[ $VERBOSE ]];
 	then
 		MV_ARGS="-v"
@@ -161,17 +196,55 @@ check_if_gitweb()
 	fi
 }
 
-check_if_themed()
+check_for_symlinks()
 {
-
-	if [[ -h "$TARGET/$GW_CSS" && \
-		  -h "$TARGET/$GW_JS" && \
-		  -h "$TARGET/$GW_ICON" && \
-		  -h "$TARGET/$GW_LOGO" ]]
+	if [[ "$1" == "complete" ]]
 	then
-		echo $TRUE
+		if [[ -h "$TARGET/$GW_CSS" && \
+			  -h "$TARGET/$GW_JS" && \
+			  -h "$TARGET/$GW_ICON" && \
+			  -h "$TARGET/$GW_LOGO" ]]
+		then
+			echo $TRUE
+		else
+			echo $FALSE
+		fi
 	else
-		echo $FALSE
+		if [[ -h "$TARGET/$GW_CSS" || \
+			  -h "$TARGET/$GW_JS" || \
+			  -h "$TARGET/$GW_ICON" || \
+			  -h "$TARGET/$GW_LOGO" ]]
+		then
+			echo $TRUE
+		else
+			echo $FALSE
+		fi
+	fi
+}
+
+check_for_backups()
+{
+	if [[ "$1" == "complete" ]]
+	then
+		if [[ -e "$TARGET/$GW_CSS.bak" && \
+			  -e "$TARGET/$GW_JS.bak" && \
+			  -e "$TARGET/$GW_ICON.bak" && \
+			  -e "$TARGET/$GW_LOGO.bak" ]]
+		then
+			echo $TRUE
+		else
+			echo $FALSE
+		fi
+	else
+		if [[ -e "$TARGET/$GW_CSS.bak" || \
+			  -e "$TARGET/$GW_JS.bak" || \
+			  -e "$TARGET/$GW_ICON.bak" || \
+			  -e "$TARGET/$GW_LOGO.bak" ]]
+		then
+			echo $TRUE
+		else
+			echo $FALSE
+		fi
 	fi
 }
 
@@ -196,14 +269,20 @@ confirm()
 log()
 {
 	if [[ $VERBOSE ]]; then
-		echo "$1"
+		if [[ $1 == "-n" ]]
+		then
+			echo -n "$2"
+		else
+			echo "$1"
+		fi
 	fi
 }
 
 usage()
 {
 cat << EOF
-Usage: $0 [OPTIONS]
+Usage: $0 [-v|-i] [-t <TARGET>|--target <TARGET>] [--install|--remove|--repair]
+Or: $0 [-V|-h|--version|--help] 
 
 This script will create symlinks to your gitweb install for themeing.
 The default location is '/usr/share/gitweb' unless set via -t or --target. 
@@ -212,9 +291,11 @@ OPTIONS:
   -v, --verbose       Verbose output
   -i, --interactive   Pauses for confirmation at each step
   -t, --target        Where to create the symlinks, gitweb installation path
+  -h, --help          Shows this usage message
   -V, --version       Displays version information
-  --install           Adds '.bak' to original files and creates symlinks to new files
-  --remove            Deletes the symlinks and restores the original files.
+  --install           Adds '.bak' to original files and creates symlinks to theme files
+  --remove            Deletes themed symlinks and restores the original files.
+  --repair            Removes all theme files, then reinstalls
 EOF
 }
 
@@ -236,6 +317,8 @@ GW_CSS="gitweb.css"
 GW_JS="gitweb.js"
 GW_ICON="git-favicon.png"
 GW_LOGO="git-logo.png"
+
+THEME_FILES=( "gitweb.css" "gitweb.js" "git-favicon.png" "git-logo.png" )
 
 SHORT_OPTS="hviVt:"
 LONG_OPTS="help,verbose,interactive,version,target:,install,remove"
@@ -264,26 +347,30 @@ while [ $# -gt 0 ]; do
 		;;
 		-v|--verbose)
 			VERBOSE=true
+			shift
 		;;
 		-i|--interactive)
 			INTERACTIVE=true
+			shift
 		;;
 		-t|--target)
 			TARGET=$2
 		;;
 		-V|--version)
+			usage
+			echo ""
 			echo "Gitweb Theme Installer Script - v$PROG_VERSION"
 			echo " Author: $AUTHOR"
-			echo ""
-			echo "Use $TARGET/setup --help for instructions"
 		;; 
 		--install)
 			install
-			shift
 		;;
 		--remove)
 			remove
-			shift
+		;;
+		--repair)
+			remove
+			install
 		;;
 		--)
 			shift
