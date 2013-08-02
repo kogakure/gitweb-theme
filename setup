@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 ##########################################################
 #   Configuration
 ##########################################################
@@ -23,15 +22,17 @@ install()
 	set_target
 	set_cmd_args
 	
-	if [[ ( $(check_for_symlinks) == $TRUE ) && ( $(check_for_backups) == $TRUE ) ]];
+	if [[ $(check_for_symlinks) == $TRUE && $(check_for_backups) == $TRUE ]]
 	then
-		log "[ERROR] - Symlinks and backups found in target (Is the theme already installed?)" >&2
+		log "[ERROR]  - Symlinks and backups found in target, nothing to do." >&2
+		log "[ERROR]  - (Is the theme already installed?)" >&2
 		exit 1
 	else
 
 #Backing up
 		if [[ $INTERACTIVE == $TRUE ]]
 		then
+			log ""
 			if [[ $(confirm "Backing up original files, continue?") == $FALSE ]]
 			then
 				echo ""
@@ -41,23 +42,27 @@ install()
 			fi
 		fi
 
-		if [[ $(check_for_backups "complete") == $TRUE ]];
-		then
-			log "Original Backups already present, skipping..."
-		else
-			log "Backing up..."
-			for FILE in "${THEME_FILES[@]}"
-			do
+		log ""
+		log "Backing up..."
+		log ""
+		for FILE in "${THEME_FILES[@]}"
+		do
+			if [[ -e "$TARGET/$FILE.bak" ]]
+			then
+				log "Skipping $FILE.bak, file exists..."
+			else
 				mv $MV_ARGS "$TARGET/$FILE" "$TARGET/$FILE.bak"
-			done
-			log "...Complete!"
-		fi
+			fi
+		done
+		log ""
+		log "...done"
 
 
 #Symlinking
 		if [[ $INTERACTIVE == $TRUE ]]
 		then
-			if [[ $(confirm "Symlinking theme files, continue?") == $FALSE ]]
+			log ""
+			if [[ $(confirm "Linking theme files, continue?") == $FALSE ]]
 			then
 				echo ""
 				exit 1
@@ -66,17 +71,20 @@ install()
 			fi
 		fi
 
-		if [[ $(check_for_symlinks "complete") == $TRUE ]];
-		then
-			log "Symlinks already present, skipping..."
-		else
-			log "Symlinking..."
-			for FILE in "${THEME_FILES[@]}"
-			do
+		log ""
+		log "Linking..."
+		log ""
+		for FILE in "${THEME_FILES[@]}"
+		do
+			if [[ -h "$TARGET/$FILE" ]]
+			then
+				log "Skipping $FILE, symlink exists..."
+			else
 				ln $LN_ARGS "$THEME/$FILE" "$TARGET/$FILE"
-			done
-			log "...Complete!"
-		fi
+			fi
+		done
+		log ""
+		log "...done"
 	fi
 }
 
@@ -84,52 +92,83 @@ remove()
 {
 	set_target
 	set_cmd_args
-
-	if [[ ( $(check_for_symlinks) == $TRUE ) && ( $(check_for_backups) == $TRUE ) ]];
+	
+	if [[ $(check_for_symlinks "missing") == $TRUE && $(check_for_backups "missing") == $TRUE ]]
 	then
-		log ""
-		if [[ $INTERACTIVE && $(confirm "Deleting Symlinks, Continue?") == $FALSE ]]; then
-			echo ""
-			exit 1
-		else
-			echo ""
-			if [[ $(check_for_symlinks) == $TRUE ]]
+		log "[ERROR]  - No symlinks or backups found in target, Nothing to do." >&2
+		log "[ERROR]  - (Is the theme already removed?)" >&2
+		exit 1
+	else
+	
+#Deleting
+		if [[ $INTERACTIVE == $TRUE ]]
+		then
+			log ""
+			if [[ $(confirm "Deleting symlinks, continue?") == $FALSE ]]
 			then
-				rm $RM_ARGS "$TARGET/$GW_CSS"
-				rm $RM_ARGS "$TARGET/$GW_JS"
-				rm $RM_ARGS "$TARGET/$GW_ICON"
-				rm $RM_ARGS "$TARGET/$GW_LOGO"
+				echo ""
+				exit 1
 			else
-				echo "Symlinks not found, skipping."
+				echo ""
 			fi
 		fi
 
-		log ""
-		if [[ $(confirm "Restoring Original Files, Continue?") == $FALSE ]]; then
-			echo ""
-			exit 1
-		else
-			echo ""
-			mv $MV_ARGS "$TARGET/$GW_CSS.bak" "$TARGET/$GW_CSS"
-			mv $MV_ARGS "$TARGET/$GW_JS.bak" "$TARGET/$GW_JS"
-			mv $MV_ARGS "$TARGET/$GW_ICON.bak" "$TARGET/$GW_ICON"
-			mv $MV_ARGS "$TARGET/$GW_LOGO.bak" "$TARGET/$GW_LOGO"
+		if [[ $(check_for_symlinks) == $FALSE ]]
+		then
+			log ""
+			log "Deleting symlinks..."
+			log ""
+			for FILE in "${THEME_FILES[@]}"
+			do
+				if [[ -h "$TARGET/$FILE" ]]
+				then
+					rm $RM_ARGS "$TARGET/$FILE"
+				else
+					log "Skipping $FILE, not found..."
+				fi
+			done
+			log ""
+			log "...done"
 		fi
-
-		echo ""
-		log "...Complete!"
-	else
-		log "[ERROR] - Nothing to do, no symlinks or backups found in target (Is the theme already removed?)" >&2
+		
+#Restoring
+		if [[ $INTERACTIVE == $TRUE ]]
+		then
+			log ""
+			if [[ $(confirm "Restoring original files, continue?") == $FALSE ]]
+			then
+				echo ""
+				exit 1
+			else
+				echo ""
+			fi
+		fi
+		
+		if [[ $(check_for_backups) == $TRUE ]]
+		then
+			log ""
+			log "Restoring..."
+			log ""
+			for FILE in "${THEME_FILES[@]}"
+			do
+				if [[ -e "$TARGET/$FILE" ]]
+				then
+					mv $MV_ARGS "$TARGET/$FILE.bak" "$TARGET/$FILE"
+				else
+					log "Skipping $FILE.bak, not found..."
+				fi
+			done
+			log ""
+			log "...done"
+		fi
 	fi
 }
 
 set_target()
 {
-	debug
-	
-	if [[ $TARGET && ( $(check_if_gitweb $TARGET) == $TRUE ) ]]
+	if [[ $TARGET && $(check_for_static $TARGET) == $TRUE ]]
 	then
-		log "Using specified install path: '$TARGET'"
+		log "[NOTICE] - Using specified target path: '$TARGET'"
 		
 		if [[ $INTERACTIVE == $TRUE ]]; then
 			if [[ $(confirm "Is this correct?") == $FALSE ]]; then
@@ -140,13 +179,15 @@ set_target()
 			fi
 		fi
 
-		$TARGET="$TARGET/static"
+		TARGET="$TARGET/static"
 	else
-		if [[ $(check_if_gitweb $DEFAULT_TARGET) == $TRUE ]]
+		if [[ $(check_for_static $DEFAULT_TARGET) == $TRUE ]]
 		then
-			log "Target not set, using default install path: '$DEFAULT_TARGET'"
+			log "[NOTICE] - Target not set, using default path: '$DEFAULT_TARGET'"
 			
-			if [[ $INTERACTIVE  == $TRUE ]] ; then
+			if [[ $INTERACTIVE  == $TRUE ]]
+			then
+				log ""
 				if [[ $(confirm "Is this ok?") == $FALSE ]]
 				then
 					echo ""
@@ -156,10 +197,10 @@ set_target()
 				fi
 			fi
 
-			$TARGET="$DEFAULT_TARGET/static"
+			TARGET="$DEFAULT_TARGET/static"
 		else
-			log "[ERROR] - Couldn't find folder 'static/' in the install path: '$TARGET'" >&2
-			log "[ERROR] - Are you sure this folder contains gitweb?" >&2
+			log "[ERROR]  - Couldn't find folder 'static/' in the target path: '$TARGET'" >&2
+			log "[ERROR]  - (Are you sure this folder contains gitweb?)" >&2
 			exit 1
 		fi
 	fi
@@ -171,21 +212,21 @@ set_cmd_args()
 	LN_ARGS=""
 	RM_ARGS=""
 
-	if [[ $VERBOSE ]];
+	if [[ $VERBOSE == $TRUE ]];
 	then
 		MV_ARGS="-v"
 		LN_ARGS="-v -s"
 		RM_ARGS="-v"
 	fi
 	
-	if [[ $INTERACTIVE ]];
+	if [[ $INTERACTIVE == $TRUE ]];
 	then
 		MV_ARGS="-i"
 		LN_ARGS="-i -s"
 		RM_ARGS="-i"
 	fi
 	
-	if [[ $INTERACTIVE && $VERBOSE ]];
+	if [[ $INTERACTIVE == $TRUE && $VERBOSE == $TRUE ]];
 	then
 		MV_ARGS="-i -v"
 		LN_ARGS="-i -v -s"
@@ -193,66 +234,90 @@ set_cmd_args()
 	fi
 }
 
-check_if_gitweb()
+check_for_static()
 {
+	local RETURN=$FALSE
+	
 	if [[ -d "$1/static" ]]
 	then
-		echo $TRUE
-	else
-		echo $FALSE
+		RETURN=$TRUE
 	fi
+	
+	echo $RETURN
 }
 
+#If all present, true
+#If passed "missing", and all missing, true
 check_for_symlinks()
 {
-	if [[ "$1" == "complete" ]]
+	local RETURN=$TRUE
+
+	if [[ $1 == "missing" ]]
 	then
-		if [[ -h "$TARGET/$GW_CSS" && \
-			  -h "$TARGET/$GW_JS" && \
-			  -h "$TARGET/$GW_ICON" && \
-			  -h "$TARGET/$GW_LOGO" ]]
+		local COUNT=0
+	
+		for FILE in "${THEME_FILES[@]}"
+		do
+			if [[ ! -h "$TARGET/$FILE" ]]
+			then
+				COUNT=$(expr $COUNT + 1)
+			fi
+		done
+		
+		if [[ $COUNT == "${THEME_FILES[@]}" ]]
 		then
-			echo $TRUE
+			RETURN=$TRUE
 		else
-			echo $FALSE
+			RETURN=$FALSE
 		fi
 	else
-		if [[ -h "$TARGET/$GW_CSS" || \
-			  -h "$TARGET/$GW_JS" || \
-			  -h "$TARGET/$GW_ICON" || \
-			  -h "$TARGET/$GW_LOGO" ]]
-		then
-			echo $TRUE
-		else
-			echo $FALSE
-		fi
+		for FILE in "${THEME_FILES[@]}"
+		do
+			if [[ ! -h "$TARGET/$FILE" ]]
+			then
+				RETURN=$FALSE
+			fi
+		done
 	fi
+	
+	echo $RETURN
 }
 
+#If all present, true
+#If passed "missing", and all missing, true
 check_for_backups()
 {
-	if [[ "$1" == "complete" ]]
+	local RETURN=$TRUE
+	
+	if [[ $1 == "missing" ]]
 	then
-		if [[ -e "$TARGET/$GW_CSS.bak" && \
-			  -e "$TARGET/$GW_JS.bak" && \
-			  -e "$TARGET/$GW_ICON.bak" && \
-			  -e "$TARGET/$GW_LOGO.bak" ]]
+		local COUNT=0
+	
+		for FILE in "${THEME_FILES[@]}"
+		do
+			if [[ ! -e "$TARGET/$FILE.bak" ]]
+			then
+				COUNT=$(expr $COUNT + 1)
+			fi
+		done
+		
+		if [[ $COUNT == "${THEME_FILES[@]}" ]]
 		then
-			echo $TRUE
+			RETURN=$TRUE
 		else
-			echo $FALSE
+			RETURN=$FALSE
 		fi
 	else
-		if [[ -e "$TARGET/$GW_CSS.bak" || \
-			  -e "$TARGET/$GW_JS.bak" || \
-			  -e "$TARGET/$GW_ICON.bak" || \
-			  -e "$TARGET/$GW_LOGO.bak" ]]
-		then
-			echo $TRUE
-		else
-			echo $FALSE
-		fi
+		for FILE in "${THEME_FILES[@]}"
+		do
+			if [[ ! -e "$TARGET/$FILE.bak" ]]
+			then
+				RETURN=$FALSE
+			fi
+		done
 	fi
+
+	echo $RETURN
 }
 
 confirm()
@@ -267,7 +332,7 @@ confirm()
 			echo $FALSE
 		;;
 		*)
-			echo " $0: [ERROR] - You must answer [y] | [n]"
+			echo "$0: [ERROR] - You must answer [y] | [n]"
 			confirm "$1"
 		;;
 	esac
@@ -314,6 +379,7 @@ EOF
 ##########################################################
 #   Let's Go!
 ##########################################################
+#
 PROG_NAME=$0
 PROG_VERSION="0.9.0"
 AUTHOR="Kevin Hill <http://github.com/kevinkhill>"
@@ -322,14 +388,9 @@ readonly TRUE=0
 readonly FALSE=1
 
 TARGET=
-THEME=`pwd`
+THEME=$(pwd)
 INTERACTIVE=$FALSE
 VERBOSE=$FALSE
-
-#GW_CSS="gitweb.css"
-#GW_JS="gitweb.js"
-#GW_ICON="git-favicon.png"
-#GW_LOGO="git-logo.png"
 
 THEME_FILES=( "gitweb.css" "gitweb.js" "git-favicon.png" "git-logo.png" )
 
@@ -357,11 +418,9 @@ while [ $# -gt 0 ]; do
 		;;
 		-v|--verbose)
 			VERBOSE=$TRUE
-			shift
 		;;
 		-i|--interactive)
 			INTERACTIVE=$TRUE
-			shift
 		;;
 		-t|--target)
 			TARGET=$2
