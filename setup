@@ -25,7 +25,7 @@ install()
 	
 	if [[ ( $(check_for_symlinks) == $TRUE ) && ( $(check_for_backups) == $TRUE ) ]];
 	then
-		log "$0: error - Symlinks and backups found in target (Is the theme already installed?)" >&2
+		log "$0: error - Symlinks and backups found in target (Is the theme already installed?)$DEFAULT" >&2
 		exit 1
 	else
 
@@ -76,7 +76,7 @@ install()
 			done
 		fi
 
-		log "Complete!"
+		log " Complete!"
 	fi
 }
 
@@ -117,9 +117,9 @@ remove()
 		fi
 
 		echo ""
-		echo "Complete!"
+		log "notice - Complete!"
 	else
-		echo "Nothing to do, no symlinks or backups found in target (Is the theme already removed?)"
+		log "error - Nothing to do, no symlinks or backups found in target (Is the theme already removed?)" >&2
 	fi
 }
 
@@ -127,33 +127,38 @@ set_target()
 {
 	if [[ $TARGET && ( $(check_if_gitweb $TARGET) == $TRUE ) ]]
 	then
-		log "Using specified install path: '$TARGET'"
-		$TARGET="$TARGET/static"
+		log "notice - Using specified install path: '$TARGET'"
 		
 		if [[ $INTERACTIVE ]]; then
 			if [[ $(confirm "Is this correct?") == $FALSE ]]; then
 				echo ""
 				exit 1
+			else
+				echo ""
 			fi
 		fi
+
+		$TARGET="$TARGET/static"
 	else
 		if [[ $(check_if_gitweb $DEFAULT_TARGET) == $TRUE ]]
 		then
-			log "Using default install path: '$DEFAULT_TARGET'"
+			log "notice - Target not set, using default install path: '$DEFAULT_TARGET'"
 			
 			if [[ $INTERACTIVE ]]; then
-				if [[ $(confirm "Is this correct?") == $FALSE ]]
+				if [[ $(confirm "Is this ok?") == $FALSE ]]
 				then
 					echo ""
 					exit 1
 				else
 					echo ""
-					TARGET="$DEFAULT_TARGET/static"
 				fi
 			fi
+
+			$TARGET="$DEFAULT_TARGET/static"
 		else
-			echo "Couldn't find static folder in the install path."
-			echo "Are you sure this folder contains gitweb?"
+			log "error - Couldn't find folder 'static/' in the install path: '$TARGET'" >&2
+			log "error - Are you sure this folder contains gitweb?" >&2
+			exit 1
 		fi
 	fi
 }
@@ -250,7 +255,7 @@ check_for_backups()
 
 confirm()
 {
-	read -n 1 -p "$1 ([y]es / [n]o) : " REPLY
+	read -n 1 -p "$0: query - $1 [y] | [n] : " REPLY
 	
 	case $REPLY in
 		y|Y)
@@ -260,7 +265,7 @@ confirm()
 			echo $FALSE
 		;;
 		*)
-			echo "You must answer [y]es or [n]o"
+			echo " $0: error - You must answer [y] | [n]"
 			confirm "$1"
 		;;
 	esac
@@ -271,9 +276,9 @@ log()
 	if [[ $VERBOSE ]]; then
 		if [[ $1 == "-n" ]]
 		then
-			echo -n "$2"
+			echo -n "$0: $2"
 		else
-			echo "$1"
+			echo "$0: $1"
 		fi
 	fi
 }
@@ -308,24 +313,24 @@ PROG_NAME=$0
 PROG_VERSION="0.9.0"
 AUTHOR="Kevin Hill <http://github.com/kevinkhill>"
 
+readonly TRUE=0
+readonly FALSE=1
+
 TARGET=
 THEME=`pwd`
 INTERACTIVE=false
 VERBOSE=false
 
-GW_CSS="gitweb.css"
-GW_JS="gitweb.js"
-GW_ICON="git-favicon.png"
-GW_LOGO="git-logo.png"
+#GW_CSS="gitweb.css"
+#GW_JS="gitweb.js"
+#GW_ICON="git-favicon.png"
+#GW_LOGO="git-logo.png"
 
 THEME_FILES=( "gitweb.css" "gitweb.js" "git-favicon.png" "git-logo.png" )
 
 SHORT_OPTS="hviVt:"
 LONG_OPTS="help,verbose,interactive,version,target:,install,remove"
 OPTS=$(getopt -o "$SHORT_OPTS" -l "$LONG_OPTS" --name "$0" -- "$@")
-
-readonly TRUE=0
-readonly FALSE=1
 
 if [ $? != 0 ]; then
     exit 1
