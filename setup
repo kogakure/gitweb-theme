@@ -42,21 +42,25 @@ install()
 			fi
 		fi
 
-		log ""
-		log "Backing up..."
-		log ""
-		for FILE in "${THEME_FILES[@]}"
-		do
-			if [[ -e "$TARGET/$FILE.bak" ]]
-			then
-				log "Skipping $FILE.bak, file exists..."
-			else
-				mv $MV_ARGS "$TARGET/$FILE" "$TARGET/$FILE.bak"
-			fi
-		done
-		log ""
-		log "...done"
-
+		if [[ $(check_for_backups) == $TRUE ]]
+		then
+			log "[NOTICE] - Backups present, skipping..."
+		else
+			log ""
+			log "Backing up..."
+			log ""
+			for FILE in "${THEME_FILES[@]}"
+			do
+				if [[ -e "$TARGET/$FILE.bak" ]]
+				then
+					log "Skipping $FILE.bak, file exists..."
+				else
+					mv $MV_ARGS "$TARGET/$FILE" "$TARGET/$FILE.bak"
+				fi
+			done
+			log ""
+			log "...done"
+		fi
 
 #Symlinking
 		if [[ $INTERACTIVE == $TRUE ]]
@@ -71,20 +75,25 @@ install()
 			fi
 		fi
 
-		log ""
-		log "Linking..."
-		log ""
-		for FILE in "${THEME_FILES[@]}"
-		do
-			if [[ -h "$TARGET/$FILE" ]]
-			then
-				log "Skipping $FILE, symlink exists..."
-			else
-				ln $LN_ARGS "$THEME/$FILE" "$TARGET/$FILE"
-			fi
-		done
-		log ""
-		log "...done"
+		if [[ $(check_for_symlinks) == $TRUE ]]
+		then
+			log "[NOTICE] - Symlinks present, skipping..."
+		else
+			log ""
+			log "Linking..."
+			log ""
+			for FILE in "${THEME_FILES[@]}"
+			do
+				if [[ -h "$TARGET/$FILE" ]]
+				then
+					log "Skipping $FILE, symlink exists..."
+				else
+					ln $LN_ARGS "$THEME/$FILE" "$TARGET/$FILE"
+				fi
+			done
+			log ""
+			log "...done"
+		fi
 	fi
 }
 
@@ -129,6 +138,8 @@ remove()
 			done
 			log ""
 			log "...done"
+		else
+			log "[NOTICE] - Symlinks not found, skipping..."
 		fi
 		
 #Restoring
@@ -144,7 +155,7 @@ remove()
 			fi
 		fi
 		
-		if [[ $(check_for_backups) == $TRUE ]]
+		if [[ $(check_for_backups) == $FALSE ]]
 		then
 			log ""
 			log "Restoring..."
@@ -160,6 +171,8 @@ remove()
 			done
 			log ""
 			log "...done"
+		else
+			log "[NOTICE] - Backups not found, skipping..."
 		fi
 	fi
 }
