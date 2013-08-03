@@ -24,9 +24,9 @@ install()
 	
 	if [[ $(check_for_symlinks) == $TRUE && $(check_for_backups) == $TRUE ]]
 	then
-		log "" >&2
-		log "[ERROR]  - Symlinks and backups found in target, nothing to do." >&2
-		log "[ERROR]  - (Is the theme already installed?)" >&2
+		log ""
+		log "[ERROR]  - Symlinks and backups found in target, nothing to do."
+		log "[ERROR]  - (Is the theme already installed?)"
 		exit 1
 	else
 
@@ -105,9 +105,9 @@ remove()
 	
 	if [[ $(check_for_symlinks "missing") == $TRUE && $(check_for_backups "missing") == $TRUE ]]
 	then
-		log "" >&2
-		log "[ERROR]  - No symlinks or backups found in target, Nothing to do." >&2
-		log "[ERROR]  - (Is the theme already removed?)" >&2
+		log ""
+		log "[ERROR]  - No symlinks or backups found in target, Nothing to do."
+		log "[ERROR]  - (Is the theme already removed?)"
 		exit 1
 	else
 	
@@ -214,8 +214,9 @@ set_target()
 
 			TARGET="$DEFAULT_TARGET/static"
 		else
-			log "[ERROR]  - Couldn't find folder 'static/' in the target path: '$TARGET'" >&2
-			log "[ERROR]  - (Are you sure this folder contains gitweb?)" >&2
+			log ""
+			log "[ERROR]  - Couldn't find folder 'static/' in the target path: '$TARGET'"
+			log "[ERROR]  - (Are you sure this folder contains gitweb?)"
 			exit 1
 		fi
 	fi
