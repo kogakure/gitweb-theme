@@ -96,6 +96,9 @@ install()
 			log "...done"
 		fi
 	fi
+	
+	log ""
+	log "[NOTICE] - Installation complete!"
 }
 
 remove()
@@ -177,6 +180,9 @@ remove()
 			log "[NOTICE] - Backups not found, skipping..."
 		fi
 	fi
+	
+	log ""
+	log "[NOTICE] - Removal complete!"
 }
 
 set_target()
