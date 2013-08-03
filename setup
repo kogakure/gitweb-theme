@@ -164,7 +164,7 @@ remove()
 			log ""
 			for FILE in "${THEME_FILES[@]}"
 			do
-				if [[ -e "$TARGET/$FILE" ]]
+				if [[ -e "$TARGET/$FILE.bak" ]]
 				then
 					mv $MV_ARGS "$TARGET/$FILE.bak" "$TARGET/$FILE"
 				else
