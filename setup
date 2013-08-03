@@ -124,7 +124,7 @@ remove()
 			fi
 		fi
 
-		if [[ $(check_for_symlinks) == $FALSE ]]
+		if [[ $(check_for_symlinks) == $TRUE ]]
 		then
 			log ""
 			log "Deleting symlinks..."
@@ -157,7 +157,7 @@ remove()
 			fi
 		fi
 		
-		if [[ $(check_for_backups) == $FALSE ]]
+		if [[ $(check_for_backups) == $TRUE ]]
 		then
 			log ""
 			log "Restoring..."
