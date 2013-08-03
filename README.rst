@@ -1,4 +1,3 @@
-================
 Theme for gitweb
 ================
 
@@ -16,7 +15,15 @@ Just clone the repository to a location of your choice, probably your home folde
   git clone git://github.com/kevinkhill/gitweb-theme.git
   ./setup -vi --install
 
-Of course you can just copy them to the new location. If you see some missing things or errors, please create a ticket or fix it and send a pull request.
+The script can also be used to remove the theme as well::
+
+  ./setup -vi --remove
+
+For full script usage, run::
+
+  ./setup --help
+
+Of course you can just copy them to the new location manually. If you see some missing things or errors, please create a ticket or fix it and send a pull request.
 
 Optionally, you can enable syntax highlighting for your code. Install the highligh package with your package manager and add this line to /etc/gitweb.conf:
 
