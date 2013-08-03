@@ -24,6 +24,7 @@ install()
 	
 	if [[ $(check_for_symlinks) == $TRUE && $(check_for_backups) == $TRUE ]]
 	then
+		log "" >&2
 		log "[ERROR]  - Symlinks and backups found in target, nothing to do." >&2
 		log "[ERROR]  - (Is the theme already installed?)" >&2
 		exit 1
@@ -104,6 +105,7 @@ remove()
 	
 	if [[ $(check_for_symlinks "missing") == $TRUE && $(check_for_backups "missing") == $TRUE ]]
 	then
+		log "" >&2
 		log "[ERROR]  - No symlinks or backups found in target, Nothing to do." >&2
 		log "[ERROR]  - (Is the theme already removed?)" >&2
 		exit 1
