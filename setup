@@ -368,13 +368,6 @@ log()
 	fi
 }
 
-debug()
-{
-echo "TARGET=$TARGET"
-echo "INTERACTIVE=$INTERACTIVE"
-echo "VERBOSE=$VERBOSE"
-}
-
 usage()
 {
 cat << EOF
@@ -446,6 +439,7 @@ while [ $# -gt 0 ]; do
 		;;
 		-t|--target)
 			TARGET=$2
+			shift
 		;;
 		-V|--version)
 			echo "Gitweb Theme Installer Script - v$PROG_VERSION"
