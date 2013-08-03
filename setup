@@ -439,8 +439,6 @@ while [ $# -gt 0 ]; do
 			TARGET=$2
 		;;
 		-V|--version)
-			usage
-			echo ""
 			echo "Gitweb Theme Installer Script - v$PROG_VERSION"
 			echo " Author: $AUTHOR"
 		;; 
