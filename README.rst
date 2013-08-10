@@ -1,4 +1,3 @@
-================
 Theme for gitweb
 ================
 
@@ -11,22 +10,17 @@ Installation
 
 The installation of this stylesheet is very easy:
 
-Just clone the repository to a location of your choice, probably into the same directory where the base gitweb stylesheet is located (in Ubuntu, this is e.g. /usr/share/gitweb/). It's recommended to move away the existing files and then create symlinks to the new files. You can do this with the following few commands::
+1. Clone the repository to a location of your choice ``git clone https://github.com/kogakure/gitweb-theme.git``
+2. Run ``./setup -vi --install`` and your gitweb will be themed!
 
-  cd <PUT YOUR LOCATION OF GITWEB HERE, could be /usr/share/gitweb/>
-  mv gitweb.css gitweb_original.css
-  mv gitweb.js gitweb_original.js
-  mv git-logo.png git-logo_original.png
-  mv git-favicon.png git-favicon_original.png
-  git clone git://github.com/kogakure/gitweb-theme.git
-  ln -s gitweb-theme/gitweb.css gitweb.css
-  ln -s gitweb-theme/gitweb.js gitweb.js
-  ln -s gitweb-theme/git-logo.png git-logo.png
-  ln -s gitweb-theme/git-favicon.png git-favicon.png
+ - If you are on Ubuntu, then the script will default to gitweb's installation directory "/usr/share/gitweb/".
+ - If this is not where gitweb is located, then pass the directory to the script with the --target or -t option.
 
-Of course you can just copy them to the new location. If you see some missing things or errors, please create a ticket or fix it and send a pull request.
+3. Of course you can just copy them to the new location too.
 
-Optionally, you can enable syntax highlighting for your code. Install the highligh package with your package manager and add this line to /etc/gitweb.conf:
+If you see some missing things or errors, please create a ticket or fix it and send a pull request.
+
+Optionally, you can enable syntax highlighting for your code. Install the highlight package with your package manager and add this line to /etc/gitweb.conf:
 
   $feature{'highlight'}{'default'} = [1];
 
@@ -36,6 +30,27 @@ You can enable Gravatar support with this line:
 
 .. _gitweb: http://git.or.cz/gitwiki/Gitweb
 .. _kogakure.github.com/gitweb-theme: http://kogakure.github.com/gitweb-theme
+
+Setup Script
+============
+
+::
+
+  Usage: ./setup [-v|-i] [-t <TARGET>|--target <TARGET>] [--install|--remove|--repair]  
+  Or: ./setup [-V|-h|--version|--help]
+
+  This script will create symlinks to your gitweb install for themeing.
+  The default location is '/usr/share/gitweb' unless set via -t or --target. 
+
+  OPTIONS:
+  -v, --verbose       Verbose output
+  -i, --interactive   Pauses for confirmation at each step
+  -t, --target        Where to create the symlinks, gitweb installation path
+  -h, --help          Shows this usage message
+  -V, --version       Displays version information
+  --install           Adds '.bak' to original files and creates symlinks to theme files
+  --remove            Deletes themed symlinks and restores the original files.
+  --repair            Removes all theme files, then reinstalls
 
 Licence
 =======
