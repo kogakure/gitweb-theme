@@ -305,9 +305,22 @@ th .header {
 }
 
 .title {
-  width: 95%;
-  padding: 5px;
   margin: 0 auto 15px auto;
+  padding: 5px;
+  width: 95%;
+}
+
+.readme {
+  background: #eaf2f5;
+  border: 1px solid #bedce7;
+  box-sizing: border-box;
+  margin: 0 auto 15px auto;
+  padding: 15px;
+  width: 95%;
+}
+
+.readme h1 {
+  margin-top: 0;
 }
 
 .projects_list,
