@@ -320,7 +320,62 @@ th .header {
 }
 
 .readme h1 {
+  display: block;
+  font-size: 2em;
+  font-weight: bold;
+  margin-bottom: 0.67em;
   margin-top: 0;
+}
+
+.readme h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 0.83em;
+}
+
+
+.readme h3 {
+  font-size: 1.17em;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+
+.readme p {
+  margin-bottom: 1em;
+}
+
+.readme ul {
+  list-style: disc;
+  margin-bottom: 1em;
+  margin-left: 1.5em;
+}
+
+.readme ul ul {
+  margin-bottom: 0;
+}
+
+.readme ol {
+  list-style: decimal;
+  margin-bottom: 1em;
+  margin-left: 1.5em;
+}
+
+.readme ol ol {
+  margin-bottom: 0;
+}
+
+.readme pre {
+  font-family: monospace;
+  margin: 1em 0;
+  white-space: pre;
+}
+
+.readme tt, .readme code, .readme kbd, .readme samp {
+  font-family: monospace;
+}
+
+.readme blockquote {
+  margin: 1em;
 }
 
 .projects_list,
