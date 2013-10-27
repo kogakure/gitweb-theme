@@ -494,8 +494,8 @@ span.refs span.ref {
   color: #707070;
   display: inline-block;
   margin: 0;
-  background-color: #eee;
-  border: 1px solid #ccc;
+  background-color: #c4c4ff;
+  border: 1px solid #7878ff;
   border-radius: 3px;
   height: 18px;
   padding: 0 6px;
@@ -506,8 +506,8 @@ span.refs span.tag {
   color: #707070;
   display: inline-block;
   margin: 0;
-  background-color: #eee;
-  border: 1px solid #ccc;
+  background-color: #ffffab;
+  border: 1px solid #d9d93b;
   border-radius: 3px;
   height: 18px;
   padding: 0 6px;
@@ -518,8 +518,8 @@ span.refs span.head {
   color: #707070;
   display: inline-block;
   margin: 0;
-  background-color: #eee;
-  border: 1px solid #ccc;
+  background-color: #c4ffc4;
+  border: 1px solid #78ff78;
   border-radius: 3px;
   height: 18px;
   padding: 0 6px;
@@ -527,7 +527,7 @@ span.refs span.head {
 }
 
 span.refs a {
-  color: #707070;
+  color: #4e4e4e;
   font: 11px "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, monospace;
   line-height: 18px;
 }
