@@ -500,6 +500,9 @@ span.refs span.ref {
   height: 18px;
   padding: 0 6px;
   text-overflow: ellipsis;
+  background-image: url('ref.png');
+  background-repeat: no-repeat;
+  padding-left: 18px;
 }
 
 span.refs span.tag {
@@ -512,6 +515,9 @@ span.refs span.tag {
   height: 18px;
   padding: 0 6px;
   text-overflow: ellipsis;
+  background-image: url('tag.png');
+  background-repeat: no-repeat;
+  padding-left: 18px;
 }
 
 span.refs span.head {
@@ -524,6 +530,9 @@ span.refs span.head {
   height: 18px;
   padding: 0 6px;
   text-overflow: ellipsis;
+  background-image: url('head.png');
+  background-repeat: no-repeat;
+  padding-left: 18px;
 }
 
 span.refs a {
