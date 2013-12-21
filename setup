@@ -5,7 +5,7 @@
 ##########################################################
 #
 # Here you can set the default installation directory
-# 
+#
 DEFAULT_TARGET="/usr/share/gitweb"
 
 
@@ -19,363 +19,363 @@ DEFAULT_TARGET="/usr/share/gitweb"
 #
 install()
 {
-	set_target
-	set_cmd_args
-	
-	if [[ $(check_for_symlinks) == $TRUE && $(check_for_backups) == $TRUE ]]
-	then
-		log ""
-		log "[ERROR]  - Symlinks and backups found in target, nothing to do."
-		log "[ERROR]  - (Is the theme already installed?)"
-		exit 1
-	else
+  set_target
+  set_cmd_args
+
+  if [[ $(check_for_symlinks) == $TRUE && $(check_for_backups) == $TRUE ]]
+  then
+    log ""
+    log "[ERROR]  - Symlinks and backups found in target, nothing to do."
+    log "[ERROR]  - (Is the theme already installed?)"
+    exit 1
+  else
 
 #Backing up
-		if [[ $INTERACTIVE == $TRUE ]]
-		then
-			log ""
-			if [[ $(confirm "Backing up original files, continue?") == $FALSE ]]
-			then
-				echo ""
-				exit 1
-			else
-				echo ""
-			fi
-		fi
+    if [[ $INTERACTIVE == $TRUE ]]
+    then
+      log ""
+      if [[ $(confirm "Backing up original files, continue?") == $FALSE ]]
+      then
+        echo ""
+        exit 1
+      else
+        echo ""
+      fi
+    fi
 
-		if [[ $(check_for_backups) == $TRUE ]]
-		then
-			log "[NOTICE] - Backups present, skipping..."
-		else
-			log ""
-			log "Backing up..."
-			log ""
-			for FILE in "${THEME_FILES[@]}"
-			do
-				if [[ -e "$TARGET/$FILE.bak" ]]
-				then
-					log "Skipping $FILE.bak, file exists..."
-				else
-					mv $MV_ARGS "$TARGET/$FILE" "$TARGET/$FILE.bak"
-				fi
-			done
-			log ""
-			log "...done"
-		fi
+    if [[ $(check_for_backups) == $TRUE ]]
+    then
+      log "[NOTICE] - Backups present, skipping..."
+    else
+      log ""
+      log "Backing up..."
+      log ""
+      for FILE in "${THEME_FILES[@]}"
+      do
+        if [[ -e "$TARGET/$FILE.bak" ]]
+        then
+          log "Skipping $FILE.bak, file exists..."
+        else
+          mv $MV_ARGS "$TARGET/$FILE" "$TARGET/$FILE.bak"
+        fi
+      done
+      log ""
+      log "...done"
+    fi
 
 #Symlinking
-		if [[ $INTERACTIVE == $TRUE ]]
-		then
-			log ""
-			if [[ $(confirm "Linking theme files, continue?") == $FALSE ]]
-			then
-				echo ""
-				exit 1
-			else
-				echo ""
-			fi
-		fi
+    if [[ $INTERACTIVE == $TRUE ]]
+    then
+      log ""
+      if [[ $(confirm "Linking theme files, continue?") == $FALSE ]]
+      then
+        echo ""
+        exit 1
+      else
+        echo ""
+      fi
+    fi
 
-		if [[ $(check_for_symlinks) == $TRUE ]]
-		then
-			log "[NOTICE] - Symlinks present, skipping..."
-		else
-			log ""
-			log "Linking..."
-			log ""
-			for FILE in "${THEME_FILES[@]}"
-			do
-				if [[ -h "$TARGET/$FILE" ]]
-				then
-					log "Skipping $FILE, symlink exists..."
-				else
-					ln $LN_ARGS "$THEME/$FILE" "$TARGET/$FILE"
-				fi
-			done
-			log ""
-			log "...done"
-		fi
-	fi
-	
-	log ""
-	log "[NOTICE] - Installation complete!"
+    if [[ $(check_for_symlinks) == $TRUE ]]
+    then
+      log "[NOTICE] - Symlinks present, skipping..."
+    else
+      log ""
+      log "Linking..."
+      log ""
+      for FILE in "${THEME_FILES[@]}"
+      do
+        if [[ -h "$TARGET/$FILE" ]]
+        then
+          log "Skipping $FILE, symlink exists..."
+        else
+          ln $LN_ARGS "$THEME/$FILE" "$TARGET/$FILE"
+        fi
+      done
+      log ""
+      log "...done"
+    fi
+  fi
+
+  log ""
+  log "[NOTICE] - Installation complete!"
 }
 
 remove()
 {
-	set_target
-	set_cmd_args
-	
-	if [[ $(check_for_symlinks "missing") == $TRUE && $(check_for_backups "missing") == $TRUE ]]
-	then
-		log ""
-		log "[ERROR]  - No symlinks or backups found in target, Nothing to do."
-		log "[ERROR]  - (Is the theme already removed?)"
-		exit 1
-	else
-	
-#Deleting
-		if [[ $INTERACTIVE == $TRUE ]]
-		then
-			log ""
-			if [[ $(confirm "Deleting symlinks, continue?") == $FALSE ]]
-			then
-				echo ""
-				exit 1
-			else
-				echo ""
-			fi
-		fi
+  set_target
+  set_cmd_args
 
-		if [[ $(check_for_symlinks) == $TRUE ]]
-		then
-			log ""
-			log "Deleting symlinks..."
-			log ""
-			for FILE in "${THEME_FILES[@]}"
-			do
-				if [[ -h "$TARGET/$FILE" ]]
-				then
-					rm $RM_ARGS "$TARGET/$FILE"
-				else
-					log "Skipping $FILE, not found..."
-				fi
-			done
-			log ""
-			log "...done"
-		else
-			log "[NOTICE] - Symlinks not found, skipping..."
-		fi
-		
+  if [[ $(check_for_symlinks "missing") == $TRUE && $(check_for_backups "missing") == $TRUE ]]
+  then
+    log ""
+    log "[ERROR]  - No symlinks or backups found in target, Nothing to do."
+    log "[ERROR]  - (Is the theme already removed?)"
+    exit 1
+  else
+
+#Deleting
+    if [[ $INTERACTIVE == $TRUE ]]
+    then
+      log ""
+      if [[ $(confirm "Deleting symlinks, continue?") == $FALSE ]]
+      then
+        echo ""
+        exit 1
+      else
+        echo ""
+      fi
+    fi
+
+    if [[ $(check_for_symlinks) == $TRUE ]]
+    then
+      log ""
+      log "Deleting symlinks..."
+      log ""
+      for FILE in "${THEME_FILES[@]}"
+      do
+        if [[ -h "$TARGET/$FILE" ]]
+        then
+          rm $RM_ARGS "$TARGET/$FILE"
+        else
+          log "Skipping $FILE, not found..."
+        fi
+      done
+      log ""
+      log "...done"
+    else
+      log "[NOTICE] - Symlinks not found, skipping..."
+    fi
+
 #Restoring
-		if [[ $INTERACTIVE == $TRUE ]]
-		then
-			log ""
-			if [[ $(confirm "Restoring original files, continue?") == $FALSE ]]
-			then
-				echo ""
-				exit 1
-			else
-				echo ""
-			fi
-		fi
-		
-		if [[ $(check_for_backups) == $TRUE ]]
-		then
-			log ""
-			log "Restoring..."
-			log ""
-			for FILE in "${THEME_FILES[@]}"
-			do
-				if [[ -e "$TARGET/$FILE.bak" ]]
-				then
-					mv $MV_ARGS "$TARGET/$FILE.bak" "$TARGET/$FILE"
-				else
-					log "Skipping $FILE.bak, not found..."
-				fi
-			done
-			log ""
-			log "...done"
-		else
-			log "[NOTICE] - Backups not found, skipping..."
-		fi
-	fi
-	
-	log ""
-	log "[NOTICE] - Removal complete!"
+    if [[ $INTERACTIVE == $TRUE ]]
+    then
+      log ""
+      if [[ $(confirm "Restoring original files, continue?") == $FALSE ]]
+      then
+        echo ""
+        exit 1
+      else
+        echo ""
+      fi
+    fi
+
+    if [[ $(check_for_backups) == $TRUE ]]
+    then
+      log ""
+      log "Restoring..."
+      log ""
+      for FILE in "${THEME_FILES[@]}"
+      do
+        if [[ -e "$TARGET/$FILE.bak" ]]
+        then
+          mv $MV_ARGS "$TARGET/$FILE.bak" "$TARGET/$FILE"
+        else
+          log "Skipping $FILE.bak, not found..."
+        fi
+      done
+      log ""
+      log "...done"
+    else
+      log "[NOTICE] - Backups not found, skipping..."
+    fi
+  fi
+
+  log ""
+  log "[NOTICE] - Removal complete!"
 }
 
 set_target()
 {
-	if [[ $TARGET && $(check_for_static $TARGET) == $TRUE ]]
-	then
-		log "[NOTICE] - Using specified target path: '$TARGET'"
-		
-		if [[ $INTERACTIVE == $TRUE ]]; then
-			if [[ $(confirm "Is this correct?") == $FALSE ]]; then
-				echo ""
-				exit 1
-			else
-				echo ""
-			fi
-		fi
+  if [[ $TARGET && $(check_for_static $TARGET) == $TRUE ]]
+  then
+    log "[NOTICE] - Using specified target path: '$TARGET'"
 
-		TARGET="$TARGET/static"
-	else
-		if [[ $(check_for_static $DEFAULT_TARGET) == $TRUE ]]
-		then
-			log "[NOTICE] - Target not set, using default path: '$DEFAULT_TARGET'"
-			
-			if [[ $INTERACTIVE  == $TRUE ]]
-			then
-				log ""
-				if [[ $(confirm "Is this ok?") == $FALSE ]]
-				then
-					echo ""
-					exit 1
-				else
-					echo ""
-				fi
-			fi
+    if [[ $INTERACTIVE == $TRUE ]]; then
+      if [[ $(confirm "Is this correct?") == $FALSE ]]; then
+        echo ""
+        exit 1
+      else
+        echo ""
+      fi
+    fi
 
-			TARGET="$DEFAULT_TARGET/static"
-		else
-			log ""
-			log "[ERROR]  - Couldn't find folder 'static/' in the target path: '$TARGET'"
-			log "[ERROR]  - (Are you sure this folder contains gitweb?)"
-			exit 1
-		fi
-	fi
+    TARGET="$TARGET/static"
+  else
+    if [[ $(check_for_static $DEFAULT_TARGET) == $TRUE ]]
+    then
+      log "[NOTICE] - Target not set, using default path: '$DEFAULT_TARGET'"
+
+      if [[ $INTERACTIVE  == $TRUE ]]
+      then
+        log ""
+        if [[ $(confirm "Is this ok?") == $FALSE ]]
+        then
+          echo ""
+          exit 1
+        else
+          echo ""
+        fi
+      fi
+
+      TARGET="$DEFAULT_TARGET/static"
+    else
+      log ""
+      log "[ERROR]  - Couldn't find folder 'static/' in the target path: '$TARGET'"
+      log "[ERROR]  - (Are you sure this folder contains gitweb?)"
+      exit 1
+    fi
+  fi
 }
 
 set_cmd_args()
 {
-	MV_ARGS=""
-	LN_ARGS=""
-	RM_ARGS=""
+  MV_ARGS=""
+  LN_ARGS=""
+  RM_ARGS=""
 
-	if [[ $VERBOSE == $TRUE ]];
-	then
-		MV_ARGS="-v"
-		LN_ARGS="-v -s"
-		RM_ARGS="-v"
-	fi
-	
-	if [[ $INTERACTIVE == $TRUE ]];
-	then
-		MV_ARGS="-i"
-		LN_ARGS="-i -s"
-		RM_ARGS="-i"
-	fi
-	
-	if [[ $INTERACTIVE == $TRUE && $VERBOSE == $TRUE ]];
-	then
-		MV_ARGS="-i -v"
-		LN_ARGS="-i -v -s"
-		RM_ARGS="-i -v"
-	fi
+  if [[ $VERBOSE == $TRUE ]];
+  then
+    MV_ARGS="-v"
+    LN_ARGS="-v -s"
+    RM_ARGS="-v"
+  fi
+
+  if [[ $INTERACTIVE == $TRUE ]];
+  then
+    MV_ARGS="-i"
+    LN_ARGS="-i -s"
+    RM_ARGS="-i"
+  fi
+
+  if [[ $INTERACTIVE == $TRUE && $VERBOSE == $TRUE ]];
+  then
+    MV_ARGS="-i -v"
+    LN_ARGS="-i -v -s"
+    RM_ARGS="-i -v"
+  fi
 }
 
 check_for_static()
 {
-	local RETURN=$FALSE
-	
-	if [[ -d "$1/static" ]]
-	then
-		RETURN=$TRUE
-	fi
-	
-	echo $RETURN
+  local RETURN=$FALSE
+
+  if [[ -d "$1/static" ]]
+  then
+    RETURN=$TRUE
+  fi
+
+  echo $RETURN
 }
 
 #If all present, true
 #If passed "missing", and all missing, true
 check_for_symlinks()
 {
-	local RETURN=$TRUE
+  local RETURN=$TRUE
 
-	if [[ $1 == "missing" ]]
-	then
-		local COUNT=0
-	
-		for FILE in "${THEME_FILES[@]}"
-		do
-			if [[ ! -h "$TARGET/$FILE" ]]
-			then
-				COUNT=$(expr $COUNT + 1)
-			fi
-		done
-		
-		if [[ $COUNT == "${THEME_FILES[@]}" ]]
-		then
-			RETURN=$TRUE
-		else
-			RETURN=$FALSE
-		fi
-	else
-		for FILE in "${THEME_FILES[@]}"
-		do
-			if [[ ! -h "$TARGET/$FILE" ]]
-			then
-				RETURN=$FALSE
-			fi
-		done
-	fi
-	
-	echo $RETURN
+  if [[ $1 == "missing" ]]
+  then
+    local COUNT=0
+
+    for FILE in "${THEME_FILES[@]}"
+    do
+      if [[ ! -h "$TARGET/$FILE" ]]
+      then
+        COUNT=$(expr $COUNT + 1)
+      fi
+    done
+
+    if [[ $COUNT == "${THEME_FILES[@]}" ]]
+    then
+      RETURN=$TRUE
+    else
+      RETURN=$FALSE
+    fi
+  else
+    for FILE in "${THEME_FILES[@]}"
+    do
+      if [[ ! -h "$TARGET/$FILE" ]]
+      then
+        RETURN=$FALSE
+      fi
+    done
+  fi
+
+  echo $RETURN
 }
 
 #If all present, true
 #If passed "missing", and all missing, true
 check_for_backups()
 {
-	local RETURN=$TRUE
-	
-	if [[ $1 == "missing" ]]
-	then
-		local COUNT=0
-	
-		for FILE in "${THEME_FILES[@]}"
-		do
-			if [[ ! -e "$TARGET/$FILE.bak" ]]
-			then
-				COUNT=$(expr $COUNT + 1)
-			fi
-		done
-		
-		if [[ $COUNT == "${THEME_FILES[@]}" ]]
-		then
-			RETURN=$TRUE
-		else
-			RETURN=$FALSE
-		fi
-	else
-		for FILE in "${THEME_FILES[@]}"
-		do
-			if [[ ! -e "$TARGET/$FILE.bak" ]]
-			then
-				RETURN=$FALSE
-			fi
-		done
-	fi
+  local RETURN=$TRUE
 
-	echo $RETURN
+  if [[ $1 == "missing" ]]
+  then
+    local COUNT=0
+
+    for FILE in "${THEME_FILES[@]}"
+    do
+      if [[ ! -e "$TARGET/$FILE.bak" ]]
+      then
+        COUNT=$(expr $COUNT + 1)
+      fi
+    done
+
+    if [[ $COUNT == "${THEME_FILES[@]}" ]]
+    then
+      RETURN=$TRUE
+    else
+      RETURN=$FALSE
+    fi
+  else
+    for FILE in "${THEME_FILES[@]}"
+    do
+      if [[ ! -e "$TARGET/$FILE.bak" ]]
+      then
+        RETURN=$FALSE
+      fi
+    done
+  fi
+
+  echo $RETURN
 }
 
 confirm()
 {
-	read -n 1 -p "$0: $1 [y] | [n] : " REPLY
-	
-	case $REPLY in
-		y|Y)
-			echo $TRUE
-		;;
-		n|N)
-			echo $FALSE
-		;;
-		*)
-			echo "$0: [ERROR] - You must answer [y] | [n]"
-			confirm "$1"
-		;;
-	esac
+  read -n 1 -p "$0: $1 [y] | [n] : " REPLY
+
+  case $REPLY in
+    y|Y)
+      echo $TRUE
+    ;;
+    n|N)
+      echo $FALSE
+    ;;
+    *)
+      echo "$0: [ERROR] - You must answer [y] | [n]"
+      confirm "$1"
+    ;;
+  esac
 }
 
 log()
 {
-	if [[ $VERBOSE == $TRUE ]]
-	then
-		echo "$0: $1"
-	fi
+  if [[ $VERBOSE == $TRUE ]]
+  then
+    echo "$0: $1"
+  fi
 }
 
 usage()
 {
 cat << EOF
 Usage: $0 [-v|-i] [-t <TARGET>|--target <TARGET>] [--install|--remove|--repair]
-Or: $0 [-V|-h|--version|--help] 
+Or: $0 [-V|-h|--version|--help]
 
 This script will create symlinks to your gitweb install for themeing.
-The default location is '/usr/share/gitweb' unless set via -t or --target. 
+The default location is '/usr/share/gitweb' unless set via -t or --target.
 
 OPTIONS:
   -v, --verbose       Verbose output
@@ -407,7 +407,7 @@ THEME=$(pwd)
 INTERACTIVE=$FALSE
 VERBOSE=$FALSE
 
-THEME_FILES=( "gitweb.css" "gitweb.js" "git-favicon.png" "git-logo.png" )
+THEME_FILES=( "gitweb.css" "git-favicon.png" "git-logo.png" )
 
 SHORT_OPTS="Vhvit:"
 LONG_OPTS="version,help,verbose,interactive,target:,install,remove,repair"
@@ -421,53 +421,53 @@ eval set -- "$OPTS"
 unset OPTS
 
 if [ $# -eq 0 ]; then
-	echo "$0: [ERROR] - no options specified" >&2
-	usage
+  echo "$0: [ERROR] - no options specified" >&2
+  usage
 fi
 
 while [ $# -gt 0 ]; do
-	case $1 in
-		-h|--help|-\?)
-			usage
-			exit 0
-		;;
-		-v|--verbose)
-			VERBOSE=$TRUE
-		;;
-		-i|--interactive)
-			INTERACTIVE=$TRUE
-		;;
-		-t|--target)
-			TARGET=$2
-			shift
-		;;
-		-V|--version)
-			echo "Gitweb Theme Installer Script - v$PROG_VERSION"
-			echo " Author: $AUTHOR"
-		;; 
-		--install)
-			install
-		;;
-		--remove)
-			remove
-		;;
-		--repair)
-			remove
-			install
-		;;
-		--)
-			shift
-			break
-		;;
-		-*)
-			echo "$0: [ERROR] - unrecognized option $1" >&2
-			shift
-		;;
-		*)
-			break
-		;;
-	esac
-	shift
+  case $1 in
+    -h|--help|-\?)
+      usage
+      exit 0
+    ;;
+    -v|--verbose)
+      VERBOSE=$TRUE
+    ;;
+    -i|--interactive)
+      INTERACTIVE=$TRUE
+    ;;
+    -t|--target)
+      TARGET=$2
+      shift
+    ;;
+    -V|--version)
+      echo "Gitweb Theme Installer Script - v$PROG_VERSION"
+      echo " Author: $AUTHOR"
+    ;;
+    --install)
+      install
+    ;;
+    --remove)
+      remove
+    ;;
+    --repair)
+      remove
+      install
+    ;;
+    --)
+      shift
+      break
+    ;;
+    -*)
+      echo "$0: [ERROR] - unrecognized option $1" >&2
+      shift
+    ;;
+    *)
+      break
+    ;;
+  esac
+  shift
 done
 
 exit 0
