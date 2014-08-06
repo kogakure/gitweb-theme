@@ -611,6 +611,20 @@ div.chunk_block div.new {
   border-left: 5px solid #EAF2F5;
 }
 
+/* Category
+---------------------------------------------------------------------------- */
+
+td.category {
+  background: #E6F1F6; /* old browsers */
+  background: -moz-linear-gradient(top, #C8D8E7 0%, #E6F1F3 100%); /* firefox */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#C8D8E7), color-stop(100%,#E6F1F3)); /* webkit */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#C8D8E7', endColorstr='#E6F1F3',GradientType=0 ); /* ie */
+  background: -o-linear-gradient(top, #C8D8E7 0%, #E6F1F3 100%);
+	font-weight: bold;
+  border-bottom: 1px solid #D1D1D1;
+  border-top: 1px solid #D1D1D1;
+}
+
 /* Age
 ---------------------------------------------------------------------------- */
 
