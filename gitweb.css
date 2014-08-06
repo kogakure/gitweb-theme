@@ -313,8 +313,8 @@ th .header {
 .readme {
   background: #eaf2f5;
   border: 1px solid #bedce7;
-  -moz-box-sizing: border-box; 
-  -webkit-box-sizing: border-box; 
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   margin: 0 auto 15px auto;
   padding: 15px;
@@ -620,7 +620,7 @@ td.category {
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#C8D8E7), color-stop(100%,#E6F1F3)); /* webkit */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#C8D8E7', endColorstr='#E6F1F3',GradientType=0 ); /* ie */
   background: -o-linear-gradient(top, #C8D8E7 0%, #E6F1F3 100%);
-	font-weight: bold;
+  font-weight: bold;
   border-bottom: 1px solid #D1D1D1;
   border-top: 1px solid #D1D1D1;
 }
