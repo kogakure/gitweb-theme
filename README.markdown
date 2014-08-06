@@ -10,12 +10,12 @@ The installation of this stylesheet is very easy:
 1. Clone the repository to a location of your choice `git clone https://github.com/kogakure/gitweb-theme.git`
 2. Run `./setup -vi --install` and your gitweb will be themed!
     - If you are on Ubuntu, then the script will default to gitweb's installation directory **/usr/share/gitweb/**.
-    - If this is not where gitweb is located, then pass the directory to the script with the --target or -t option.
+    - If this is not where gitweb is located, then pass the directory to the script with the `--target` or `-t` option.
 3. Of course you can just copy them to the new location too.
 
 If you see some missing things or errors, please create a ticket or fix it and send a pull request.
 
-### Configuration-File
+### Configuration file
 *Did you know?*
 
 Updating Gitweb can be quite time consuming because you have to adjust your settings in the `gitweb.cgi`. **You don’t have to!**.
@@ -35,14 +35,14 @@ $feature{'avatar'}{'default'} = ['gravatar'];
 $feature{'highlight'}{'default'} = [1];
 ```
 
-### Syntax-Highlighting
+### Syntax highlighting
 Optionally, you can enable syntax highlighting for your code. Install the highlight package with your package manager and add this line to /etc/gitweb.conf:
 
 ```perl
 $feature{'highlight'}{'default'} = [1];
 ```
 
-### Gravatar-Support
+### Gravatar support
 You can enable Gravatar support with this line:
 
 ```perl
