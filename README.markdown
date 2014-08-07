@@ -54,7 +54,14 @@ $feature{'avatar'}{'default'} = ['gravatar'];
 
 ### Categories
 
-Gitweb supports categories, which can be enabled by adding a file to your Git-Repository: `.git/category`. In this file you write the name of the category. In the Gitweb interface they will get grouped by category.
+Gitweb and this theme support categories, which can be enabled by the following gitweb config option:
+
+```perl
+$projects_list_group_categories = true;¬
+```
+
+The category name for each repository is read from `.git/category`, in the same manner as `.git/description`.
+
 
 ## Setup Script
 
