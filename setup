@@ -231,7 +231,7 @@ set_target()
 set_cmd_args()
 {
   MV_ARGS=""
-  LN_ARGS=""
+  LN_ARGS="-s"
   RM_ARGS=""
 
   if [[ $VERBOSE == $TRUE ]];
