@@ -571,8 +571,14 @@ div.diff.from_file {
 .rem {
   background: #ffdddd;
 }
+.rem .marked {
+  background: #ffaaaa;
+}
 .add {
   background: #ddffdd;
+}
+.add .marked {
+  background: #7dff7d;
 }
 
 .extended_header {
