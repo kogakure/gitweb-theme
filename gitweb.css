@@ -162,6 +162,10 @@ td, th {
   display: inline;
   float: left;
   margin-left: 25px;
+  width: 80%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 a.rss_logo {
