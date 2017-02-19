@@ -99,6 +99,26 @@ td, th {
   display: none;
 }
 
+input[type="text"] {
+  padding: 4px 20px 4px 8px;
+  min-height: 17.5px;
+  outline: medium none;
+  color: #333333;
+  border: 1px solid #cccccc;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+}
+
+input[type="text"]:focus {
+  border-color: #4A8EC2;
+  -webkit-box-shadow: 0px 1px 2px white inset, 0px 0px 5px #4a8ec2;
+  -moz-box-shadow: 0px 1px 2px white inset, 0px 0px 5px #4a8ec2;
+  box-shadow: 0px 1px 2px white inset, 0px 0px 5px #4a8ec2;
+}
+
 /* Page Header
 ---------------------------------------------------------------------------- */
 
