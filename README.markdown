@@ -1,3 +1,6 @@
+![GitHub Stars](https://img.shields.io/github/stars/kogakure/gitweb-theme.svg?style=social&label=Star)
+![GitHub Forks](https://img.shields.io/github/forks/kogakure/gitweb-theme.svg?style=social&label=Fork)
+
 # Theme for gitweb
 
 This is an alternative theme for [gitweb] (tested with git web interface version 2.0.4). It is *strongly* inspired by GitHub.
