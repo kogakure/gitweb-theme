@@ -99,6 +99,16 @@ td, th {
   display: none;
 }
 
+#generating_info {
+  font-size: 10px;
+  color: #aaa;
+  text-align: center;
+}
+
+#generating_time, #generating_cmd {
+  font-weight: bold;
+}
+
 /* Page Header
 ---------------------------------------------------------------------------- */
 
