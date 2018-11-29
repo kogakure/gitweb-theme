@@ -56,7 +56,7 @@ install()
         then
           log "Skipping $FILE.bak, file exists..."
         else
-          mv $MV_ARGS "$TARGET/$FILE" "$TARGET/$FILE.bak"
+          mv -f $MV_ARGS "$TARGET/$FILE" "$TARGET/$FILE.bak"
         fi
       done
       log ""
