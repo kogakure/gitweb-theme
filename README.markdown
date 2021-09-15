@@ -6,7 +6,7 @@
 
 This is an alternative theme for [gitweb] (tested with git web interface version 2.0.4). It is *strongly* inspired by GitHub.
 
-Fullsize screenshots available on [kogakure.github.com/gitweb-theme][gitweb-theme].
+Fullsize screenshots available on [kogakure.github.io/gitweb-theme][gitweb-theme].
 
 ## Installation
 The installation of this stylesheet is very easy:
