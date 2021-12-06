@@ -54,7 +54,7 @@ $feature{'avatar'}{'default'} = ['gravatar'];
 ```
 
 [gitweb]: http://git.or.cz/gitwiki/Gitweb
-[gitweb-theme]: http://kogakure.github.com/gitweb-theme
+[gitweb-theme]: https://kogakure.github.io/gitweb-theme/
 
 ### Categories
 
